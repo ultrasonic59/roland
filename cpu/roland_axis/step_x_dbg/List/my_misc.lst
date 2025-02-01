@@ -1,0 +1,80 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         02/Oct/2021  19:00:51
+# Copyright 1999-2019 IAR Systems AB.
+#
+#    Cpu mode     =  
+#    Endian       =  little
+#    Source file  =
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\src\my_misc.c
+#    Command line =
+#        -f C:\Users\vova\AppData\Local\Temp\EWC60F.tmp
+#        (D:\proj\velograph\snail\stm32_snail\mstep_rtos\src\my_misc.c -D
+#        VECT_TAB_FLASH -D IAR_ARM_CM3 -D STEP_BRD -D STEP_X -lcN
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\step_x_dbg\List
+#        --diag_suppress Pa082,pe191 -o
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\step_x_dbg\Obj --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering
+#        --no_scheduling --debug --endian=little --cpu=Cortex-M3 -e --fpu=None
+#        --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.3\arm\inc\c\DLib_Config_Full.h" -I
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\.\ -I
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\src\board\ -I
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\..\common\freertos\source\inc\
+#        -I D:\proj\velograph\snail\stm32_snail\mstep_rtos\src\inc\ -I
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\..\common\freertos\source\port\ARM_CM3\
+#        -I
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\..\common\libraries\STM32F2xx_StdPeriph_Driver\inc\
+#        -I
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\..\common\libraries\STM32F2xx_StdPeriph_Driver\
+#        -I D:\proj\velograph\snail\stm32_snail\mstep_rtos\..\common\dbg\ -On
+#        --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
+#        Workbench 8.3\arm\CMSIS\Core\Include\" -I "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.3\arm\CMSIS\DSP\Include\")
+#    Locale       =  C
+#    List file    =
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\step_x_dbg\List\my_misc.lst
+#    Object file  =
+#        D:\proj\velograph\snail\stm32_snail\mstep_rtos\step_x_dbg\Obj\my_misc.o
+#
+###############################################################################
+
+D:\proj\velograph\snail\stm32_snail\mstep_rtos\src\my_misc.c
+      1          #include <stdint.h>
+      2          ///=======================================================================
+      3          void uDelay (const uint32_t usec)
+      4          {
+      5          uint32_t count = 0;
+      6          const uint32_t utime = 45*usec;////(120 * usec / 7);
+      7          do
+      8            {
+      9             if ( ++count > utime )
+     10              {
+     11              return ;
+     12              }
+     13            }
+     14          while (1);
+     15          }
+     16          ///=======================================================================
+     17             
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   uDelay
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      18  uDelay
+
+ 
+ 18 bytes in section .text
+ 
+ 18 bytes of CODE memory
+
+Errors: none
+Warnings: none

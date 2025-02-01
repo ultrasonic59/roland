@@ -1,0 +1,319 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.60.2.399/W64 for ARM         25/Jan/2025  16:52:23
+# Copyright 1999-2024 IAR Systems AB.
+#
+#    Cpu mode          =  thumb
+#    Endian            =  little
+#    Source file       =
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\drv\can_drv.c
+#    Command line      =
+#        -f
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\drv_9119342922082540178.dir\can_drv.o.rsp
+#        (D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\drv\can_drv.c -D
+#        VECT_TAB_FLASH -D IAR_ARM_CM3 -D STEP_BRD -D STEP_X -lcN
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\List\drv_9119342922082540178.dir
+#        --diag_suppress Pa082,pe191 -o
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\drv_9119342922082540178.dir
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_clustering --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Config_Full.h -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\.\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\board\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\freertos\source\inc\
+#        -I D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\inc\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\freertos\source\port\ARM_CM3\
+#        -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\
+#        -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\
+#        -I D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\dbg\
+#        -On --use_c++_inline -I C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\)
+#        --dependencies=n
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\drv_9119342922082540178.dir\can_drv.o.iar_deps
+#    Locale            =  C
+#    List file         =
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\List\drv_9119342922082540178.dir\can_drv.lst
+#    Object file       =
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\drv_9119342922082540178.dir\can_drv.o
+#    Runtime model:       
+#      __CPP_Runtime   =  1
+#      __SystemLibrary =  DLib
+#      __dlib_version  =  6
+#
+###############################################################################
+
+D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\drv\can_drv.c
+      1          #include "stdint.h"
+      2          #include "stm32f2xx.h"
+      3          #include "stm32f2xx_rcc.h"
+      4          #include "stm32f2xx_can.h"
+      5          #include "misc.h"
+      6          #include "board.h"
+      7          #include "printk.h"
+      8          ////=======================================================
+      9          ////#define CANx CAN1
+     10          #define MAX_CAN_DATA_LEN 8
+     11          
+     12          ////=======================================================
+     13          typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
+     14          volatile TestStatus TestRx;
+     15          __IO uint32_t ret=0;
+     16          uint8_t  CAN_TxRdy = 0;              /* CAN HW ready to transmit message */
+     17          uint8_t  CAN_RxRdy = 0;              /* CAN HW received a message        */
+     18          CanRxMsg RxMessage;
+     19          
+     20          ////=============================================================
+     21          void NVIC_can_Config(void)
+     22          {
+     23          NVIC_InitTypeDef NVIC_InitStructure;
+     24          
+     25          NVIC_InitStructure.NVIC_IRQChannel = CAN1_RX0_IRQn;
+     26          NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+     27          NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+     28          NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+     29          NVIC_Init(&NVIC_InitStructure);
+     30          }
+     31          void can1_init(void)
+     32          {
+     33          CAN_InitTypeDef        CAN_InitStructure;
+     34          CAN_FilterInitTypeDef  CAN_FilterInitStructure;
+     35            
+     36          GPIO_InitTypeDef GPIO_InitStructure;
+     37          ////============== CAN1_INH ============================
+     38          RCC_AHB1PeriphClockCmd(CAN1_INH_PIN_RCC, ENABLE);
+     39          GPIO_InitStructure.GPIO_Pin = CAN1_INH_PIN;
+     40          GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+     41          GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+     42          GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+     43          ////GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+     44          ////GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+     45          GPIO_Init( CAN1_INH_PIN_GPIO, &GPIO_InitStructure );
+     46          GPIO_ResetBits(CAN1_INH_PIN_GPIO, CAN1_INH_PIN);
+     47          
+     48          ////============== CAN1_RX ============================
+     49          RCC_AHB1PeriphClockCmd(CAN1_RX_PIN_RCC, ENABLE);
+     50          GPIO_InitStructure.GPIO_Pin = CAN1_RX_PIN;
+     51          GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+     52          GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+     53          GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+     54          ////GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+     55          ////GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+     56          GPIO_Init(CAN1_RX_PIN_GPIO, &GPIO_InitStructure );
+     57          GPIO_PinAFConfig(CAN1_RX_PIN_GPIO, CAN1_RX_PIN_SOURCE, GPIO_AF_CAN1);
+     58          ////============== CAN1_TX ============================
+     59          RCC_AHB1PeriphClockCmd(CAN1_TX_PIN_RCC, ENABLE);
+     60          GPIO_InitStructure.GPIO_Pin = CAN1_TX_PIN;
+     61          GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+     62          GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+     63          GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+     64          ////GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+     65          ////GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+     66          GPIO_Init(CAN1_TX_PIN_GPIO, &GPIO_InitStructure );
+     67          GPIO_PinAFConfig(CAN1_TX_PIN_GPIO, CAN1_TX_PIN_SOURCE, GPIO_AF_CAN1);
+     68          ////================================================================
+     69          RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1, ENABLE);
+     70          NVIC_can_Config();
+     71          
+     72            /* CAN register init */
+     73            CAN_DeInit(CAN1);
+     74          
+     75            /* CAN cell init */
+     76            CAN_InitStructure.CAN_TTCM = DISABLE;
+     77            CAN_InitStructure.CAN_ABOM = DISABLE;
+     78            CAN_InitStructure.CAN_AWUM = DISABLE;
+     79            CAN_InitStructure.CAN_NART = DISABLE;
+     80            CAN_InitStructure.CAN_RFLM = DISABLE;
+     81            CAN_InitStructure.CAN_TXFP = DISABLE;
+     82            CAN_InitStructure.CAN_Mode = CAN_Mode_Normal;///CAN_Mode_LoopBack;
+     83            CAN_InitStructure.CAN_SJW = CAN_SJW_1tq;
+     84            
+     85            /* Baudrate = 500 Kbps */
+     86            CAN_InitStructure.CAN_BS1 = CAN_BS1_6tq;
+     87            CAN_InitStructure.CAN_BS2 = CAN_BS2_8tq;
+     88            CAN_InitStructure.CAN_Prescaler = 4;
+     89            CAN_Init(CAN1, &CAN_InitStructure);
+     90          
+     91            /* CAN filter init */
+     92            CAN_FilterInitStructure.CAN_FilterNumber = 1;
+     93            CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdMask;
+     94            CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_32bit;
+     95            CAN_FilterInitStructure.CAN_FilterIdHigh = 0x0000;
+     96            CAN_FilterInitStructure.CAN_FilterIdLow = 0x0000;
+     97            CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0x0000;
+     98            CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0x0000;
+     99            CAN_FilterInitStructure.CAN_FilterFIFOAssignment = CAN_FIFO0;
+    100            CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
+    101            CAN_FilterInit(&CAN_FilterInitStructure);
+    102          
+    103            /* CAN FIFO0 message pending interrupt enable */ 
+    104            CAN_ITConfig(CAN1, CAN_IT_FMP0, ENABLE);
+    105          
+    106          }
+    107          ////==================================================================
+    108          uint8_t can1_send(uint16_t id,uint8_t data_len,uint8_t *data)
+    109          {
+    110          CanTxMsg TxMessage;
+    111          uint8_t ii ;
+    112            /* transmit 1 message */
+    113            TxMessage.StdId = 0;
+    114            TxMessage.ExtId = id;
+    115            TxMessage.IDE = CAN_ID_EXT;
+    116            TxMessage.RTR = CAN_RTR_DATA;
+    117            if(data_len>MAX_CAN_DATA_LEN)
+    118              {
+    119              data_len=MAX_CAN_DATA_LEN ; 
+    120              }
+    121            TxMessage.DLC = data_len;
+    122            for(ii=0;ii<data_len;ii++)
+    123              {
+    124              TxMessage.Data[ii] = data[ii];
+    125              }
+    126            CAN_Transmit(CAN1, &TxMessage);
+    127            return data_len;
+    128          }
+    129          
+    130          TestStatus CAN_Interrupt(void)
+    131          {
+    132            CanTxMsg TxMessage;
+    133            uint32_t i = 0;
+    134          
+    135          
+    136            /* transmit 1 message */
+    137            TxMessage.StdId = 0;
+    138            TxMessage.ExtId = 0x1234;
+    139            TxMessage.IDE = CAN_ID_EXT;
+    140            TxMessage.RTR = CAN_RTR_DATA;
+    141            TxMessage.DLC = 2;
+    142            TxMessage.Data[0] = 0xDE;
+    143            TxMessage.Data[1] = 0xCA;
+    144            CAN_Transmit(CAN1, &TxMessage);
+    145          
+    146            /* initialize the value that will be returned */
+    147            ret = 0xFF;
+    148                 
+    149            /* receive message with interrupt handling */
+    150            i = 0;
+    151            while((ret ==  0xFF) && (i < 0xFFF))
+    152            {
+    153              i++;
+    154            }
+    155            
+    156            if (i ==  0xFFF)
+    157            {
+    158              ret = 0;  
+    159            }
+    160          
+    161            /* disable interrupt handling */
+    162            CAN_ITConfig(CAN1, CAN_IT_FMP0, DISABLE);
+    163          
+    164            return (TestStatus)ret;
+    165          }
+    166          
+    167          ////==================================================================
+    168          int can_main(void)
+    169          {
+    170          RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1, ENABLE);
+    171          NVIC_can_Config();
+    172          ////=========================================
+    173          __enable_irq();
+    174          ////========================================
+    175          #if 0
+    176          TestRx = CAN_Polling();
+    177          if (TestRx !=  FAILED)
+    178            { /* OK */
+    179            printk("\r\n CAN_Polling OK");
+    180            }
+    181            else
+    182            { /* KO */
+    183            printk("\r\n CAN_Polling BAD");
+    184            }
+    185          #endif
+    186            TestRx = CAN_Interrupt();
+    187          if (TestRx !=  FAILED)
+    188            { /* OK */
+    189          
+    190             printk("\r\n Interrupt OK");
+    191            }
+    192            else
+    193            { /* KO */
+    194             printk("\r\n Interrupt BAD");
+    195            }
+    196          
+    197            /* Infinite loop */
+    198            while (1)
+    199            {
+    200              
+    201            }
+    202          
+    203          return 0;
+    204          }
+    205          
+    206          
+    207          ////==================================================================
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      40   CAN_Interrupt
+        40   -> CAN_ITConfig
+        40   -> CAN_Transmit
+       8   NVIC_can_Config
+         8   -> NVIC_Init
+      48   can1_init
+        48   -> CAN_DeInit
+        48   -> CAN_FilterInit
+        48   -> CAN_ITConfig
+        48   -> CAN_Init
+        48   -> GPIO_Init
+        48   -> GPIO_PinAFConfig
+        48   -> GPIO_ResetBits
+        48   -> NVIC_can_Config
+        48   -> RCC_AHB1PeriphClockCmd
+        48   -> RCC_APB1PeriphClockCmd
+      40   can1_send
+        40   -> CAN_Transmit
+       8   can_main
+         8   -> CAN_Interrupt
+         8   -> NVIC_can_Config
+         8   -> RCC_APB1PeriphClockCmd
+         8   -> _printk
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable4
+       4  ??DataTable4_1
+       4  ??DataTable4_2
+       4  ??DataTable4_3
+       4  ??DataTable4_4
+       4  ??DataTable4_5
+       4  ??DataTable4_6
+      16  ?_0
+      20  ?_1
+     112  CAN_Interrupt
+       1  CAN_RxRdy
+       1  CAN_TxRdy
+      34  NVIC_can_Config
+      20  RxMessage
+       1  TestRx
+     324  can1_init
+      98  can1_send
+      48  can_main
+       4  ret
+
+ 
+  27 bytes in section .bss
+  36 bytes in section .rodata
+ 644 bytes in section .text
+ 
+ 644 bytes of CODE  memory
+  36 bytes of CONST memory
+  27 bytes of DATA  memory
+
+Errors: none
+Warnings: 1

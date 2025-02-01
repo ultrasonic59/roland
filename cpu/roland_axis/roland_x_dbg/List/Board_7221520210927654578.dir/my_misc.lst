@@ -1,0 +1,89 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.60.2.399/W64 for ARM         01/Feb/2025  19:56:45
+# Copyright 1999-2024 IAR Systems AB.
+#
+#    Cpu mode          =  thumb
+#    Endian            =  little
+#    Source file       =
+#        D:\proj\velograph\roland\cpu\roland_axis\src\my_misc.c
+#    Command line      =
+#        -f
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\Board_7221520210927654578.dir\my_misc.o.rsp
+#        (D:\proj\velograph\roland\cpu\roland_axis\src\my_misc.c -D
+#        VECT_TAB_FLASH -D IAR_ARM_CM3 -D MSTEP_BRD -D STEP_X -lcN
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\Board_7221520210927654578.dir
+#        --diag_suppress Pa082,pe191 -o
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\Board_7221520210927654578.dir
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_clustering --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Config_Full.h -I
+#        D:\proj\velograph\roland\cpu\roland_axis\.\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\src\board\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\src\inc\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common\libraries\inc\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common\libraries\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\freertos\source\inc\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\freertos\source\port\ARM_CM3\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\
+#        -I D:\proj\velograph\roland\cpu\roland_axis\..\..\common\dbg\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\can\ -On
+#        --use_c++_inline -I C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\)
+#        --dependencies=n
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\Board_7221520210927654578.dir\my_misc.o.iar_deps
+#    Locale            =  C
+#    List file         =
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\Board_7221520210927654578.dir\my_misc.lst
+#    Object file       =
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\Board_7221520210927654578.dir\my_misc.o
+#    Runtime model:       
+#      __CPP_Runtime   =  1
+#      __SystemLibrary =  DLib
+#      __dlib_version  =  6
+#
+###############################################################################
+
+D:\proj\velograph\roland\cpu\roland_axis\src\my_misc.c
+      1          #include <stdint.h>
+      2          ///=======================================================================
+      3          void uDelay (const uint32_t usec)
+      4          {
+      5          uint32_t count = 0;
+      6          const uint32_t utime = 45*usec;////(120 * usec / 7);
+      7          do
+      8            {
+      9             if ( ++count > utime )
+     10              {
+     11              return ;
+     12              }
+     13            }
+     14          while (1);
+     15          }
+     16          ///=======================================================================
+     17             
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   uDelay
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      18  uDelay
+
+ 
+ 18 bytes in section .text
+ 
+ 18 bytes of CODE memory
+
+Errors: none
+Warnings: none

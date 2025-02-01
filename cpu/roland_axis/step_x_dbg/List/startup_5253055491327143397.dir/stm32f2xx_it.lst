@@ -1,0 +1,435 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.60.2.399/W64 for ARM         25/Jan/2025  16:52:23
+# Copyright 1999-2024 IAR Systems AB.
+#
+#    Cpu mode                 =  thumb
+#    Endian                   =  little
+#    Source file              =
+#        D:\proj\velograph\snail_w\stm32_snail\common_stm32\startup\stm32f2xx_it.c
+#    Command line             =
+#        -f
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\startup_5253055491327143397.dir\stm32f2xx_it.o.rsp
+#        (D:\proj\velograph\snail_w\stm32_snail\common_stm32\startup\stm32f2xx_it.c
+#        -D VECT_TAB_FLASH -D IAR_ARM_CM3 -D STEP_BRD -D STEP_X -lcN
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\List\startup_5253055491327143397.dir
+#        --diag_suppress Pa082,pe191 -o
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\startup_5253055491327143397.dir
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_clustering --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Config_Full.h -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\.\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\board\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\freertos\source\inc\
+#        -I D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\inc\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\freertos\source\port\ARM_CM3\
+#        -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\
+#        -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\
+#        -I D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\dbg\
+#        -On --use_c++_inline -I C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\)
+#        --dependencies=n
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\startup_5253055491327143397.dir\stm32f2xx_it.o.iar_deps
+#    Locale                   =  C
+#    List file                =
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\List\startup_5253055491327143397.dir\stm32f2xx_it.lst
+#    Object file              =
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\startup_5253055491327143397.dir\stm32f2xx_it.o
+#    Runtime model:              
+#      __CPP_Runtime          =  1
+#      __SystemLibrary        =  DLib
+#      __dlib_file_descriptor =  1
+#      __dlib_version         =  6
+#
+###############################################################################
+
+D:\proj\velograph\snail_w\stm32_snail\common_stm32\startup\stm32f2xx_it.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    stm32f2xx_it.c
+      4            * @author  MCD Application Team
+      5            * @version V1.0.2
+      6            * @date    06-June-2011
+      7            * @brief   Main Interrupt Service Routines.
+      8            *          This file provides template for all exceptions handler and 
+      9            *          peripherals interrupt service routine.
+     10            ******************************************************************************
+     11            * @attention
+     12            *
+     13            * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     14            * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+     15            * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+     16            * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+     17            * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+     18            * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     19            *
+     20            * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+     21            ******************************************************************************
+     22            */
+     23          
+     24          /* Includes ------------------------------------------------------------------*/
+     25          #include "stdio.h"
+     26          #include "stm32f2xx_it.h"
+     27          #include "stm32f2xx_can.h"
+     28          
+     29          extern void vPortSVCHandler(void);
+     30          extern void xPortPendSVHandler(void);
+     31          extern void xPortSysTickHandler(void);
+     32          extern void usart1_irq(void);
+     33          extern void usart2_irq(void);
+     34          
+     35          
+     36          /******************************************************************************/
+     37          /*            Cortex-M3 Processor Exceptions Handlers                         */
+     38          /******************************************************************************/
+     39          
+     40          
+     41          /**
+     42            * @brief   This function handles NMI exception.
+     43            * @param  None
+     44            * @retval None
+     45            */
+     46          void NMI_Handler(void)
+     47          {
+     48            /* Go to infinite loop when Memory Manage exception occurs */
+     49            while (1)
+     50            {
+     51            }
+     52          }
+     53          
+     54          
+     55          void hard_fault_handler_c (unsigned int * hardfault_args)
+     56          {
+     57          #if 1
+     58            volatile unsigned int stacked_r0;
+     59            volatile unsigned int stacked_r1;
+     60            volatile unsigned int stacked_r2;
+     61            volatile unsigned int stacked_r3;
+     62            volatile unsigned int stacked_r12;
+     63            volatile unsigned int stacked_lr;
+     64            volatile unsigned int stacked_pc;
+     65            volatile unsigned int stacked_psr;
+     66           
+     67            stacked_r0 = ((unsigned long) hardfault_args[0]);
+     68            stacked_r1 = ((unsigned long) hardfault_args[1]);
+     69            stacked_r2 = ((unsigned long) hardfault_args[2]);
+     70            stacked_r3 = ((unsigned long) hardfault_args[3]);
+     71           
+     72            stacked_r12 = ((unsigned long) hardfault_args[4]);
+     73            stacked_lr = ((unsigned long) hardfault_args[5]);
+     74            stacked_pc = ((unsigned long) hardfault_args[6]);
+     75            stacked_psr = ((unsigned long) hardfault_args[7]);
+     76          #endif
+     77           while (1);
+     78          #if 0
+     79            printf ("\r\n\r\n[Hard fault handler - all numbers in hex]\r\n");
+     80            printf ("R0 = %x\r\n", stacked_r0);
+     81            printf ("R1 = %x\r\n", stacked_r1);
+     82            printf ("R2 = %x\r\n", stacked_r2);
+     83            printf ("R3 = %x\r\n", stacked_r3);
+     84            printf ("R12 = %x\r\n", stacked_r12);
+     85            printf ("LR [R14] = %x  subroutine call return address\r\n", stacked_lr);
+     86            printf ("PC [R15] = %x  program counter\r\n", stacked_pc);
+     87            printf ("PSR = %x\r\n", stacked_psr);
+     88            printf ("BFAR = %x\r\n", (*((volatile unsigned long *)(0xE000ED38))));
+     89            printf ("CFSR = %x\r\n", (*((volatile unsigned long *)(0xE000ED28))));
+     90            printf ("HFSR = %x\r\n", (*((volatile unsigned long *)(0xE000ED2C))));
+     91            printf ("DFSR = %x\r\n", (*((volatile unsigned long *)(0xE000ED30))));
+     92            printf ("AFSR = %x\r\n", (*((volatile unsigned long *)(0xE000ED3C))));
+     93            printf ("SCB_SHCSR = %x\r\n", SCB->SHCSR);
+     94           
+     95            while (1);
+     96          #endif
+     97          }
+     98          #if 1
+     99          void __HardFault_Handler(void)
+    100          {
+    101          	/* Go to infinite loop when Hard Fault exception occurs */
+    102          	while (1)
+    103          	{
+    104          	}
+    105          }
+    106          #endif
+    107          /**
+    108            * @brief  This function handles Memory Manage exception.
+    109            * @param  None
+    110            * @retval None
+    111            */
+    112          void MemManage_Handler(void)
+    113          {
+    114            /* Go to infinite loop when Memory Manage exception occurs */
+    115            while (1)
+    116            {
+    117            }
+    118          }
+    119          
+    120          /**
+    121            * @brief  This function handles Bus Fault exception.
+    122            * @param  None
+    123            * @retval None
+    124            */
+    125          void BusFault_Handler(void)
+    126          {
+    127            /* Go to infinite loop when Bus Fault exception occurs */
+    128            while (1)
+    129            {
+    130            }
+    131          }
+    132          
+    133          /**
+    134            * @brief  This function handles Usage Fault exception.
+    135            * @param  None
+    136            * @retval None
+    137            */
+    138          void UsageFault_Handler(void)
+    139          {
+    140            /* Go to infinite loop when Usage Fault exception occurs */
+    141            while (1)
+    142            {
+    143            }
+    144          }
+    145          
+    146          /**
+    147            * @brief  This function handles SVCall exception.
+    148            * @param  None
+    149            * @retval None
+    150            */
+    151          
+    152          void SVC_Handler(void) 
+    153          {
+    154            vPortSVCHandler();
+    155          }
+    156          
+    157          /**
+    158            * @brief  This function handles Debug Monitor exception.
+    159            * @param  None
+    160            * @retval None
+    161            */
+    162          void DebugMon_Handler(void)
+    163          {
+    164          }
+    165          
+    166          /**
+    167            * @brief  This function handles PendSVC exception.
+    168            * @param  None
+    169            * @retval None
+    170            */
+    171          void PendSV_Handler(void)
+    172          {
+    173            xPortPendSVHandler();
+    174          }
+    175          extern void user_tick_hnd(void);
+    176          /**
+    177            * @brief  This function handles SysTick Handler.
+    178            * @param  None
+    179            * @retval None
+    180            */
+    181          void SysTick_Handler(void) 
+    182          {
+    183            xPortSysTickHandler();
+    184            
+    185          }
+    186          
+    187          /******************************************************************************/
+    188          /*                 STM32F2xx Peripherals Interrupt Handlers                   */
+    189          /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
+    190          /*  available peripheral interrupt handler's name please refer to the startup */
+    191          /*  file (startup_stm32f2xx.s).                                            */
+    192          /******************************************************************************/
+    193          
+    194          /**
+    195            * @brief  This function handles PPP interrupt request.
+    196            * @param  None
+    197            * @retval None
+    198            */
+    199          /*void PPP_IRQHandler(void)
+    200          {
+    201          }*/
+    202           /*******************************************************************************
+    203          * Function Name  : SDIO_IRQHandler
+    204          * Description    : This function handles SDIO global interrupt request.
+    205          * Input          : None
+    206          * Output         : None
+    207          * Return         : None
+    208          *******************************************************************************/
+    209          void SDIO_IRQHandler(void)
+    210          {
+    211            /* Process All SDIO Interrupt Sources */
+    212           ///// sdio_irq();
+    213          }
+    214          ////extern void sdio_dma_irq(void);
+    215          void DMA2_Stream3_IRQHandler(void)
+    216          {
+    217          ////sdio_dma_irq();
+    218          }
+    219          extern void usart1_tx_dma_irq(void);
+    220          void DMA2_Stream7_IRQHandler(void)
+    221          { 
+    222          //// usart1_tx_dma_irq();
+    223          }
+    224          //// extern void usart1_rx_dma_irq(void);
+    225          void DMA2_Stream2_IRQHandler(void)
+    226          { 
+    227          //// usart1_rx_dma_irq();
+    228          }
+    229          ////=============================
+    230          
+    231          /*EXTI ISR*/
+    232          void EXTI0_IRQHandler(void)
+    233          {
+    234          ////gpio_irq();//SDIO OOB interrupt
+    235          }
+    236          
+    237          void EXTI1_IRQHandler(void)
+    238          {
+    239          ////    gpio_irq();
+    240          }
+    241          
+    242          void EXTI2_IRQHandler(void)
+    243          {
+    244           ////   gpio_irq();
+    245          }
+    246          
+    247          void EXTI3_IRQHandler(void)
+    248          {
+    249           ////   gpio_irq();//User defined external interrupt, EMW3162 button 1: PA3
+    250          }
+    251          
+    252          void EXTI4_IRQHandler(void)
+    253          {
+    254          ////    gpio_irq();
+    255          }
+    256          
+    257          void EXTI9_5_IRQHandler(void)
+    258          {
+    259          ////    gpio_irq(); //User defined external interrupt, EMW3161 button 1: PH9
+    260          }
+    261          
+    262          void EXTI15_10_IRQHandler(void)
+    263          {
+    264          ////    gpio_irq();
+    265          }
+    266          
+    267          ////============= CAN1 =================================================
+    268          ///#include "can.h"
+    269          ////extern __IO uint32_t ret;
+    270          extern uint8_t  CAN_TxRdy;              /* CAN HW ready to transmit message */
+    271          extern CanRxMsg RxMessage;
+    272          
+    273          ///==================================================
+    274          #ifdef USEUSB
+    275          
+    276          #include "usb_core.h"
+    277          #include "FreeRTOS.h"
+    278          #include "task.h"
+    279          #include "queue.h"
+    280          
+    281          extern USB_OTG_CORE_HANDLE           USB_OTG_dev;
+    282          extern uint32_t USBD_OTG_ISR_Handler (USB_OTG_CORE_HANDLE *pdev);
+    283          /////extern void my_USBD_OTG_ISR_Handler (USB_OTG_CORE_HANDLE *pdev);
+    284          extern xQueueHandle q_usb_in;
+    285          ////USB_OTG_CORE_HANDLE           *pUSB_OTG_dev;
+    286          /**
+    287          * @brief  This function handles OTG_HS Handler.
+    288          * @param  None
+    289          * @retval None
+    290          */
+    291          void OTG_FS_IRQHandler(void)
+    292          {
+    293          USBD_OTG_ISR_Handler(&USB_OTG_dev) ; 
+    294          #if 0  
+    295          ///signed portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+    296          ///pUSB_OTG_dev=&USB_OTG_dev;
+    297          ////xQueueSendFromISR(q_usb_in, &pUSB_OTG_dev, &xHigherPriorityTaskWoken);
+    298          my_USBD_OTG_ISR_Handler (&USB_OTG_dev);
+    299          #endif  
+    300          }
+    301          
+    302          #ifdef USB_OTG_HS_DEDICATED_EP1_ENABLED 
+    303          /**
+    304          * @brief  This function handles EP1_IN Handler.
+    305          * @param  None
+    306          * @retval None
+    307          */
+    308          void OTG_HS_EP1_IN_IRQHandler(void)
+    309          {
+    310            USBD_OTG_EP1IN_ISR_Handler (&USB_OTG_dev);
+    311          }
+    312          
+    313          /**
+    314          * @brief  This function handles EP1_OUT Handler.
+    315          * @param  None
+    316          * @retval None
+    317          */
+    318          void OTG_HS_EP1_OUT_IRQHandler(void)
+    319          {
+    320            USBD_OTG_EP1OUT_ISR_Handler (&USB_OTG_dev);
+    321          }
+    322          #endif  /// USEUSB
+    323          #endif
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   BusFault_Handler
+       0   DMA2_Stream2_IRQHandler
+       0   DMA2_Stream3_IRQHandler
+       0   DMA2_Stream7_IRQHandler
+       0   DebugMon_Handler
+       0   EXTI0_IRQHandler
+       0   EXTI15_10_IRQHandler
+       0   EXTI1_IRQHandler
+       0   EXTI2_IRQHandler
+       0   EXTI3_IRQHandler
+       0   EXTI4_IRQHandler
+       0   EXTI9_5_IRQHandler
+       0   MemManage_Handler
+       0   NMI_Handler
+       8   PendSV_Handler
+         8   -> xPortPendSVHandler
+       0   SDIO_IRQHandler
+       8   SVC_Handler
+         8   -> vPortSVCHandler
+       8   SysTick_Handler
+         8   -> xPortSysTickHandler
+       0   UsageFault_Handler
+       0   __HardFault_Handler
+      32   hard_fault_handler_c
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  BusFault_Handler
+       2  DMA2_Stream2_IRQHandler
+       2  DMA2_Stream3_IRQHandler
+       2  DMA2_Stream7_IRQHandler
+       2  DebugMon_Handler
+       2  EXTI0_IRQHandler
+       2  EXTI15_10_IRQHandler
+       2  EXTI1_IRQHandler
+       2  EXTI2_IRQHandler
+       2  EXTI3_IRQHandler
+       2  EXTI4_IRQHandler
+       2  EXTI9_5_IRQHandler
+       2  MemManage_Handler
+       2  NMI_Handler
+       8  PendSV_Handler
+       2  SDIO_IRQHandler
+       8  SVC_Handler
+       8  SysTick_Handler
+       2  UsageFault_Handler
+       2  __HardFault_Handler
+      36  hard_fault_handler_c
+
+ 
+ 94 bytes in section .text
+ 
+ 94 bytes of CODE memory
+
+Errors: none
+Warnings: none

@@ -1,0 +1,422 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.60.2.399/W64 for ARM         01/Feb/2025  19:56:45
+# Copyright 1999-2024 IAR Systems AB.
+#
+#    Cpu mode                     =  thumb
+#    Endian                       =  little
+#    Source file                  =
+#        D:\proj\velograph\roland\cpu\roland_axis\src\app_can_cmds.c
+#    Command line                 =
+#        -f
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\drv_9119342922082540178.dir\app_can_cmds.o.rsp
+#        (D:\proj\velograph\roland\cpu\roland_axis\src\app_can_cmds.c -D
+#        VECT_TAB_FLASH -D IAR_ARM_CM3 -D MSTEP_BRD -D STEP_X -lcN
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\drv_9119342922082540178.dir
+#        --diag_suppress Pa082,pe191 -o
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\drv_9119342922082540178.dir
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_clustering --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Config_Full.h -I
+#        D:\proj\velograph\roland\cpu\roland_axis\.\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\src\board\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\src\inc\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common\libraries\inc\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common\libraries\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\freertos\source\inc\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\freertos\source\port\ARM_CM3\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\
+#        -I D:\proj\velograph\roland\cpu\roland_axis\..\..\common\dbg\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\can\ -On
+#        --use_c++_inline -I C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\)
+#        --dependencies=n
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\drv_9119342922082540178.dir\app_can_cmds.o.iar_deps
+#    Locale                       =  C
+#    List file                    =
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\drv_9119342922082540178.dir\app_can_cmds.lst
+#    Object file                  =
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\drv_9119342922082540178.dir\app_can_cmds.o
+#    Runtime model:                  
+#      __CPP_Runtime              =  1
+#      __SystemLibrary            =  DLib
+#      __dlib_full_locale_support =  1
+#      __dlib_version             =  6
+#
+###############################################################################
+
+D:\proj\velograph\roland\cpu\roland_axis\src\app_can_cmds.c
+      1          #include <stdint.h>
+      2          #include <string.h>
+      3          #include <stdlib.h>
+      4          
+      5          #include "FreeRTOS.h"
+      6          #include "task.h"
+      7          #include "semphr.h"
+      8          #include "queue.h"
+      9          #include "board.h"
+     10          #include "can.h"
+     11          #include "can_cmds.h"
+     12          #include "printk.h"
+     13          #include "my_misc.h"
+     14          ///#include "emul_eeprom.h"
+     15          
+     16          ////=======================================
+     17          ///extern uint8_t boot_state;
+     18          
+     19          extern xQueueHandle queu_to_send;
+     20          
+     21          int put_can_cmd_reset_all(void)
+     22          {
+     23            return 0;
+     24          }
+     25          
+     26          void _mc_reset(void)
+     27          {
+     28          put_can_cmd_reset_all();  
+     29          ////report_init_message();
+     30          }
+     31          int put_can_cmd_go(uint8_t dirs,uint16_t per
+     32                             ,uint32_t step_x
+     33                             ,uint32_t step_y
+     34                             ,uint32_t step_z)
+     35          {
+     36          ///uint8_t btst=0;  
+     37          can_msg_t  send_msg;
+     38          go_cmd_t t_go_cmd;
+     39          t_go_cmd.cmd=GO_CMD ;
+     40          t_go_cmd.dirs=dirs;
+     41          t_go_cmd.step_per=per;
+     42          send_msg.len=CAN_MAX_NUM_BYTES;
+     43          send_msg.format=STANDARD_FORMAT;
+     44          send_msg.type=DATA_FRAME;
+     45          if(step_x)
+     46            {
+     47             t_go_cmd.steps=step_x;
+     48             memcpy(send_msg.data,&t_go_cmd,sizeof(go_cmd_t));
+     49             send_msg.id=ID_BRD; 
+     50             xQueueSend(queu_to_send,&send_msg,CAN_TIMEOUT_SEND);
+     51            }
+     52          if(step_y)
+     53            {
+     54             t_go_cmd.steps=step_y;
+     55             memcpy(send_msg.data,&t_go_cmd,sizeof(go_cmd_t));
+     56             send_msg.id=ID_BRD; 
+     57             xQueueSend(queu_to_send,&send_msg,CAN_TIMEOUT_SEND);
+     58            }
+     59          if(step_z)
+     60            {
+     61             t_go_cmd.steps=step_z;
+     62             memcpy(send_msg.data,&t_go_cmd,sizeof(go_cmd_t));
+     63             send_msg.id=ID_BRD; 
+     64             xQueueSend(queu_to_send,&send_msg,CAN_TIMEOUT_SEND);
+     65            }
+     66          
+     67          ////send_msg.data[1]=btst;    
+     68          ////xQueueSend(queu_to_send,&send_msg,CAN_TIMEOUT_SEND);
+     69          
+     70          ///go_cmd_t   go_cmd;
+     71          #if 0        
+     72                  printk("\n\r tst_cnt[%d][%02x][%d][%d][%d]", per, dirs
+     73                      , step_x
+     74                      , step_y
+     75                      , step_z
+     76                  );
+     77          #endif
+     78          
+     79            return 0;
+     80          }
+     81          ////================================================
+     82          #ifndef _MASTER_
+     83          
+     84          int put_can_cmd_stat(uint8_t state
+     85                             ,uint32_t coord)
+     86          {
+     87          ///uint8_t btst=0;  
+     88          can_msg_t  send_msg;
+     89          put_stat_cmd_t t_put_stat_cmd;
+     90          t_put_stat_cmd.cmd=PUT_STAT_CMD ;
+     91          t_put_stat_cmd.axis= AXIS_BRD;
+     92          
+     93          ////t_put_stat_cmd.coord=cur_coord;
+     94          ///t_put_stat_cmd.state=cur_stat;
+     95          t_put_stat_cmd.coord=coord;
+     96          t_put_stat_cmd.state=state;
+     97          send_msg.len=CAN_MAX_NUM_BYTES;
+     98          send_msg.format=STANDARD_FORMAT;
+     99          send_msg.type=DATA_FRAME;
+    100          memcpy(send_msg.data,&t_put_stat_cmd,sizeof(put_stat_cmd_t));
+    101          send_msg.id=ID_MASTER_CMD; 
+    102          xQueueSend(queu_to_send,&send_msg,CAN_TIMEOUT_SEND);
+    103          
+    104            return 0;
+    105          }
+    106          int put_can_boot_ans(uint8_t cmd,uint8_t state)
+    107          {
+    108          can_msg_t  send_msg;
+    109          put_boot_stat_cmd_t t_put_stat_cmd;
+    110          t_put_stat_cmd.cmd=cmd ;
+    111          t_put_stat_cmd.axis= AXIS_BRD;
+    112          t_put_stat_cmd.state=state;
+    113          send_msg.len=sizeof(put_boot_stat_cmd_t);
+    114          send_msg.format=STANDARD_FORMAT;
+    115          send_msg.type=DATA_FRAME;
+    116          memcpy(send_msg.data,&t_put_stat_cmd,sizeof(put_boot_stat_cmd_t));
+    117          send_msg.id=ID_MASTER_CMD; 
+    118          xQueueSend(queu_to_send,&send_msg,CAN_TIMEOUT_SEND);
+    119          
+    120            return 0;
+    121          }
+    122          int put_can_boot_cmd_stat(uint8_t state)
+    123          {
+    124          return put_can_boot_ans(PUT_BOOT_STAT,state);  
+    125          }
+    126          
+    127          int put_can_rd_eeprom_ans(rd_eeprom_ans_t *t_rd_eeprom_ans)
+    128          {
+    129          can_msg_t  send_msg;
+    130          can_cmd_t t_can_cmd;
+    131          t_can_cmd.data[0]=RD_EEPROM_ANS ;
+    132          t_can_cmd.data[1]=t_rd_eeprom_ans->num_dates;
+    133          t_can_cmd.data[2]=t_rd_eeprom_ans->addr;
+    134          memcpy(&t_can_cmd.data[3],t_rd_eeprom_ans->data,sizeof(uint16_t)*t_rd_eeprom_ans->num_dates);
+    135          send_msg.len= 3+sizeof(uint16_t)*t_rd_eeprom_ans->num_dates;
+    136          send_msg.format=STANDARD_FORMAT;
+    137          send_msg.type=DATA_FRAME;
+    138          memcpy(send_msg.data,t_can_cmd.data,3+sizeof(uint16_t)*t_rd_eeprom_ans->num_dates);
+    139          send_msg.id=ID_MASTER_CMD; 
+    140          xQueueSend(queu_to_send,&send_msg,CAN_TIMEOUT_SEND);
+    141          
+    142            return 0;
+    143          }
+    144          int put_can_wr_eeprom_ans(wr_eeprom_req_t *t_wr_eeprom_ans)
+    145          {
+    146          can_msg_t  send_msg;
+    147          can_cmd_t t_can_cmd;
+    148          t_can_cmd.data[0]=WR_EEPROM_ANS ;
+    149          t_can_cmd.data[1]=t_wr_eeprom_ans->num_dates;
+    150          t_can_cmd.data[2]=t_wr_eeprom_ans->addr;
+    151          send_msg.len= 3;
+    152          send_msg.format=STANDARD_FORMAT;
+    153          send_msg.type=DATA_FRAME;
+    154          memcpy(send_msg.data,t_can_cmd.data,3);
+    155          send_msg.id=ID_MASTER_CMD; 
+    156          xQueueSend(queu_to_send,&send_msg,CAN_TIMEOUT_SEND);
+    157          
+    158            return 0;
+    159          }
+    160          
+    161          
+    162          int put_can_ack(uint8_t cmd )
+    163          {
+    164          ///uint8_t btst=0;  
+    165          can_msg_t  send_msg;
+    166          
+    167          put_ack_t t_put_ack;
+    168          
+    169          t_put_ack.cmd=PUT_ACK ;
+    170          t_put_ack.ack.axis= AXIS_BRD;
+    171          
+    172           t_put_ack.ack.ack_cmd=cmd;
+    173          send_msg.len= sizeof(put_ack_t);
+    174          send_msg.format=STANDARD_FORMAT;
+    175          send_msg.type=DATA_FRAME;
+    176          memcpy(send_msg.data,&t_put_ack,sizeof(put_ack_t));
+    177          send_msg.id=ID_MASTER_CMD; 
+    178          xQueueSend(queu_to_send,&send_msg,CAN_TIMEOUT_SEND);
+    179          
+    180            return 0;
+    181          }
+    182          
+    183          
+    184          #endif
+    185          int put_can_rd_flash_ans(rd_flash_ans_t *t_rd_flash_ans)
+    186          {
+    187          can_msg_t  send_msg;
+    188          can_cmd_t t_can_cmd;
+    189          t_can_cmd.data[0]=RD_FLASH_ANS ;
+    190          
+    191          memcpy(&t_can_cmd.data[1],&t_rd_flash_ans->addr,sizeof(uint32_t));
+    192          
+    193          memcpy(&t_can_cmd.data[5],&t_rd_flash_ans->data,sizeof(uint16_t));
+    194          send_msg.len= 7;
+    195          send_msg.format=STANDARD_FORMAT;
+    196          send_msg.type=DATA_FRAME;
+    197          memcpy(send_msg.data,t_can_cmd.data,5+sizeof(uint16_t));
+    198          send_msg.id=ID_MASTER_CMD; 
+    199          xQueueSend(queu_to_send,&send_msg,CAN_TIMEOUT_SEND);
+    200          
+    201            return 0;
+    202          }
+    203          
+    204          
+    205          void rd_flash_dat(rd_flash_ans_t *t_rd_flash_ans)
+    206          {
+    207          uint16_t t_data;  
+    208          t_data= *(uint16_t*)(t_rd_flash_ans->addr); 
+    209          t_rd_flash_ans->data=t_data;
+    210          ///printk("\n\rflash [%x:%x] ===",t_rd_flash_ans->addr,t_rd_flash_ans->data); 
+    211          }
+    212          
+    213          
+    214            
+    215          
+    216          int obr_can_cmd(uint8_t *data)
+    217          {
+    218          ////uint8_t tmp;  
+    219          switch(data[0]) {
+    220                case STOP_CMD:
+    221                  put_can_ack(STOP_CMD);
+    222                  stop_mot_cmd();
+    223                  break;
+    224                case GO_CMD:
+    225                  {
+    226                  put_can_ack(GO_CMD);
+    227                   go_cmd((go_cmd_t *)data);
+    228            ////       printk("Go [dir=%x:per=%d:steps=%d] ",p_can_cmd->dirs,p_can_cmd->step_per,p_can_cmd->steps);
+    229                  }
+    230                  break;
+    231                case GET_STAT_CMD:
+    232                  {
+    233                  uint8_t tmp=get_conc();  
+    234                  tmp<<=4;
+    235                  cur_state&= ~CONC_MASK;
+    236                  cur_state |= tmp;
+    237                  put_can_cmd_stat(cur_state,cur_coord);
+    238                   printk("[stat=%x] ",cur_state);
+    239                   }
+    240                  break;
+    241                case SET_PARAM:
+    242                   put_can_ack(SET_PARAM);
+    243                   set_param((set_param_cmd_t *)(data));
+    244                  break;
+    245               case GET_BOOT_STAT:
+    246          ///        put_can_boot_cmd_stat(boot_state);
+    247          ///        printk("[stat=%x] ",boot_state);
+    248                  break;
+    249                 case GO_TO_BOOTER:
+    250           ////       EE_WriteVariable(ADDR_EEPROM_BOOT_WORK,0);  ///???
+    251           ///       goto_booter();
+    252                  break;
+    253                case CHECK_CONN:
+    254                   put_can_ack(CHECK_CONN );
+    255           ////   printk("CHECK_CONN[%x] ",cur_stat);
+    256                  break;
+    257          #if 0
+    258                case RD_EEPROM_REQ:
+    259                  {
+    260                  rd_eeprom_ans_t t_rd_eeprom_ans;  
+    261                  t_rd_eeprom_ans.num_dates=data[1];
+    262                  t_rd_eeprom_ans.addr=data[2];
+    263                  rd_eeprom_dat(&t_rd_eeprom_ans);
+    264                  put_can_rd_eeprom_ans(&t_rd_eeprom_ans);
+    265          ////     printk("RD_EEPROM_REQ ");
+    266                  }
+    267                  break;
+    268                case WR_EEPROM_REQ:
+    269                  {
+    270                  wr_eeprom_req_t t_wr_eeprom_req;
+    271                  t_wr_eeprom_req.num_dates=data[1];
+    272                  t_wr_eeprom_req.addr=data[2];
+    273                  memcpy(t_wr_eeprom_req.data,&data[3],sizeof(uint16_t)*t_wr_eeprom_req.num_dates); 
+    274                  wr_eeprom_dat(&t_wr_eeprom_req);
+    275                  put_can_wr_eeprom_ans(&t_wr_eeprom_req);
+    276           ////    printk("WR_EEPROM_REQ ");
+    277                  }
+    278                  break;
+    279          #endif       
+    280                case RD_FLASH_REQ:
+    281                  {
+    282                  rd_flash_ans_t t_rd_flash_ans;  
+    283                  memcpy(&t_rd_flash_ans.addr,&data[1],sizeof(uint32_t));
+    284                  rd_flash_dat(&t_rd_flash_ans);
+    285                  put_can_rd_flash_ans(&t_rd_flash_ans);
+    286          ////     printk("RD_EEPROM_REQ ");
+    287                  }
+    288                  break;
+    289               default:
+    290                break;
+    291              }
+    292          return 0;  
+    293          }
+    294          ////======================================================
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   _mc_reset
+         8   -> put_can_cmd_reset_all
+      32   obr_can_cmd
+        32   -> __aeabi_memcpy
+        32   -> _printk
+        32   -> get_conc
+        32   -> go_cmd
+        32   -> put_can_ack
+        32   -> put_can_cmd_stat
+        32   -> put_can_rd_flash_ans
+        32   -> rd_flash_dat
+        32   -> set_param
+        32   -> stop_mot_cmd
+      40   put_can_ack
+        40   -> __aeabi_memcpy
+        40   -> xQueueGenericSend
+      48   put_can_boot_ans
+        48   -> __aeabi_memcpy
+        48   -> xQueueGenericSend
+       8   put_can_boot_cmd_stat
+         8   -> put_can_boot_ans
+      64   put_can_cmd_go
+        64   -> __aeabi_memcpy
+        64   -> xQueueGenericSend
+       0   put_can_cmd_reset_all
+      48   put_can_cmd_stat
+        48   -> __aeabi_memcpy
+        48   -> xQueueGenericSend
+      64   put_can_rd_eeprom_ans
+        64   -> __aeabi_memcpy
+        64   -> xQueueGenericSend
+      72   put_can_rd_flash_ans
+        72   -> __aeabi_memcpy
+        72   -> xQueueGenericSend
+      56   put_can_wr_eeprom_ans
+        56   -> __aeabi_memcpy
+        56   -> xQueueGenericSend
+       0   rd_flash_dat
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable8
+       4  ??DataTable8_1
+       4  ??DataTable8_2
+       4  ??DataTable8_3
+      12  ?_0
+       8  _mc_reset
+     170  obr_can_cmd
+      82  put_can_ack
+      88  put_can_boot_ans
+      16  put_can_boot_cmd_stat
+     188  put_can_cmd_go
+       4  put_can_cmd_reset_all
+      92  put_can_cmd_stat
+     118  put_can_rd_eeprom_ans
+     120  put_can_rd_flash_ans
+      86  put_can_wr_eeprom_ans
+       8  rd_flash_dat
+
+ 
+  12 bytes in section .rodata
+ 996 bytes in section .text
+ 
+ 996 bytes of CODE  memory
+  12 bytes of CONST memory
+
+Errors: none
+Warnings: none

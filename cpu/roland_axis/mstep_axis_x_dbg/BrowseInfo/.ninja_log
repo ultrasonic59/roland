@@ -1,0 +1,46 @@
+# ninja log v5
+4	155	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/mstep_board.xcl	6a4369559149ff07
+11	159	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/drv_9119342922082540178.dir/app_can_cmds.xcl	abaa62113b00baa
+13	163	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/misc.xcl	5b5e4e99a4c79ac0
+0	166	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/main.xcl	ddb9b2f42be6c0a4
+16	169	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/zzzz.xcl	c2aa91a5f693a178
+6	172	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/motor_tsk.xcl	10704a2c19610c2c
+21	175	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/drv_9119342922082540178.dir/can_drv.xcl	735456472ba9bcd4
+19	179	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/my_misc.xcl	727f8267ac73c0f5
+25	183	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_rcc - Copy.xcl	882a39910a5b6b59
+27	187	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_can.xcl	f267045a4604c0b3
+9	192	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/retarget.xcl	af61836a58958381
+30	196	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_spi.xcl	9d613e89d91a3d33
+157	253	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_tim.xcl	48eea2f26c25d99f
+160	257	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_flash - Copy.xcl	8603522c6dca0a61
+170	287	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/system_stm32f2xx.xcl	3be4648aab8d14d3
+176	290	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_usart.xcl	e7bea8b0212a40f
+164	295	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_gpio - Copy.xcl	1d6528b104a40627
+180	299	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/startup_5253055491327143397.dir/stm32f2xx_it.xcl	78a946543b94fa98
+167	304	7601260780000000	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/can_thr.xcl	8893d788cb24ed90
+260	309	7601260788564388	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/my_misc.pbi	5ce23be18dd6ef17
+288	326	7601260788879210	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/retarget.pbi	68adc116608e7ce0
+173	331	7601260788889207	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/motor_tsk.pbi	fd62bd416bb00b82
+198	335	7601260788899217	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/mstep_board.pbi	32b760c39413bfa6
+189	340	7601260788929214	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/drv_9119342922082540178.dir/app_can_cmds.pbi	dd692e7231e3b5f7
+185	344	7601260789038170	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/main.pbi	67c33bd79507d24e
+255	368	7601260789295994	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/Board_7221520210927654578.dir/zzzz.pbi	495825bb9ef85164
+292	391	7601260789531220	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/drv_9119342922082540178.dir/can_drv.pbi	457e3ee779cd00c6
+193	419	7601260789806457	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/misc.pbi	fe21e67558962e8d
+301	423	7601260789831508	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_can.pbi	bc6aec5bf7a7be26
+341	427	7601260789871545	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/startup_5253055491327143397.dir/stm32f2xx_it.pbi	afda07f9d7e743e3
+296	429	7601260789901547	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_tim.pbi	20811308f44c1dea
+306	434	7601260789956786	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_usart.pbi	7c5529b1b56fe96f
+345	436	7601260789986789	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/roland_axis_part0.pbi	7543dd524bf4c23
+328	438	7601260789986789	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_gpio - Copy.pbi	3dde26fd7192d039
+333	450	7601260790116557	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_spi.pbi	e645f982c351c3b2
+370	452	7601260790140721	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/system_stm32f2xx.pbi	eef394058c637e91
+392	477	7601260790390970	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/can_thr.pbi	4c3b677687c91d3d
+420	504	7601260790671306	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/roland_axis_part1.pbi	768390b1f664b846
+311	513	7601260790756365	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_flash - Copy.pbi	b78b84f394455496
+336	541	7601260791038520	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/ST Library_14760386059681792492.dir/stm32f2xx_rcc - Copy.pbi	7438cacf4c91a82c
+478	544	7601260791068461	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/roland_axis_part4.pbi	950af9da8c4b7a96
+514	617	7601260791791665	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/roland_axis_part2.pbi	b7b4a3bf31c0f75a
+542	649	7601260792114486	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/roland_axis_part3.pbi	ee43b29fb75317f4
+649	748	7601260793115231	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/roland_axis.pbd	cca42e6504accdf1
+749	1257	7601260798040079	D:/proj/velograph/roland/cpu/roland_axis/mstep_axis_x_dbg/BrowseInfo/roland_axis.pbw	7a0559696b001b25

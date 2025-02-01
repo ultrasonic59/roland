@@ -1,0 +1,1208 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.60.2.399/W64 for ARM         25/Jan/2025  16:52:23
+# Copyright 1999-2024 IAR Systems AB.
+#
+#    Cpu mode          =  thumb
+#    Endian            =  little
+#    Source file       =
+#        D:\proj\velograph\snail_w\stm32_snail\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_flash
+#        - Copy.c
+#    Command line      =
+#        -f "D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\ST
+#        Library_14760386059681792492.dir\stm32f2xx_flash - Copy.o.rsp"
+#        ("D:\proj\velograph\snail_w\stm32_snail\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_flash
+#        - Copy.c" -D VECT_TAB_FLASH -D IAR_ARM_CM3 -D STEP_BRD -D STEP_X -lcN
+#        "D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\List\ST
+#        Library_14760386059681792492.dir" --diag_suppress Pa082,pe191 -o
+#        "D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\ST
+#        Library_14760386059681792492.dir" --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Config_Full.h -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\.\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\board\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\freertos\source\inc\
+#        -I D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\inc\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\freertos\source\port\ARM_CM3\
+#        -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\
+#        -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\
+#        -I D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\dbg\
+#        -On --use_c++_inline -I C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\)
+#        --dependencies=n
+#        "D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\ST
+#        Library_14760386059681792492.dir\stm32f2xx_flash - Copy.o.iar_deps"
+#    Locale            =  C
+#    List file         =
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\List\ST
+#        Library_14760386059681792492.dir\stm32f2xx_flash - Copy.lst
+#    Object file       =
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\ST
+#        Library_14760386059681792492.dir\stm32f2xx_flash - Copy.o
+#    Runtime model:       
+#      __CPP_Runtime   =  1
+#      __SystemLibrary =  DLib
+#      __dlib_version  =  6
+#
+###############################################################################
+
+D:\proj\velograph\snail_w\stm32_snail\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_flash - Copy.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    stm32f2xx_flash.c
+      4            * @author  MCD Application Team
+      5            * @version V1.1.0
+      6            * @date    07-October-2011
+      7            * @brief   This file provides firmware functions to manage the following 
+      8            *          functionalities of the FLASH peripheral:
+      9            *            - FLASH Interface configuration
+     10            *            - FLASH Memory Programming
+     11            *            - Option Bytes Programming
+     12            *            - Interrupts and flags management
+     13            *  
+     14            *  @verbatim
+     15            *  
+     16            *          ===================================================================
+     17            *                                 How to use this driver
+     18            *          ===================================================================
+     19            *                           
+     20            *          This driver provides functions to configure and program the FLASH 
+     21            *          memory of all STM32F2xx devices.
+     22            *          These functions are split in 4 groups:
+     23            * 
+     24            *           1. FLASH Interface configuration functions: this group includes the
+     25            *              management of the following features:
+     26            *                    - Set the latency
+     27            *                    - Enable/Disable the prefetch buffer
+     28            *                    - Enable/Disable the Instruction cache and the Data cache
+     29            *                    - Reset the Instruction cache and the Data cache
+     30            *  
+     31            *           2. FLASH Memory Programming functions: this group includes all needed
+     32            *              functions to erase and program the main memory:
+     33            *                    - Lock and Unlock the FLASH interface
+     34            *                    - Erase function: Erase sector, erase all sectors
+     35            *                    - Program functions: byte, half word, word and double word
+     36            *  
+     37            *           3. Option Bytes Programming functions: this group includes all needed
+     38            *              functions to manage the Option Bytes:
+     39            *                    - Set/Reset the write protection
+     40            *                    - Set the Read protection Level
+     41            *                    - Set the BOR level
+     42            *                    - Program the user Option Bytes
+     43            *                    - Launch the Option Bytes loader
+     44            *  
+     45            *           4. Interrupts and flags management functions: this group 
+     46            *              includes all needed functions to:
+     47            *                    - Enable/Disable the FLASH interrupt sources
+     48            *                    - Get flags status
+     49            *                    - Clear flags
+     50            *                    - Get FLASH operation status
+     51            *                    - Wait for last FLASH operation
+     52            * 
+     53            *  @endverbatim
+     54            *                      
+     55            ******************************************************************************
+     56            * @attention
+     57            *
+     58            * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     59            * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+     60            * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+     61            * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+     62            * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+     63            * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     64            *
+     65            * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+     66            ******************************************************************************
+     67            */
+     68          
+     69          /* Includes ------------------------------------------------------------------*/
+     70          #include "stm32f2xx_conf.h"
+     71          #include "stm32f2xx_flash.h"
+     72          
+     73          /** @addtogroup STM32F2xx_StdPeriph_Driver
+     74            * @{
+     75            */
+     76          
+     77          /** @defgroup FLASH 
+     78            * @brief FLASH driver modules
+     79            * @{
+     80            */ 
+     81          
+     82          /* Private typedef -----------------------------------------------------------*/
+     83          /* Private define ------------------------------------------------------------*/ 
+     84          #define SECTOR_MASK               ((uint32_t)0xFFFFFF07)
+     85          
+     86          /* Private macro -------------------------------------------------------------*/
+     87          /* Private variables ---------------------------------------------------------*/
+     88          /* Private function prototypes -----------------------------------------------*/
+     89          /* Private functions ---------------------------------------------------------*/
+     90          
+     91          /** @defgroup FLASH_Private_Functions
+     92            * @{
+     93            */ 
+     94          
+     95          /** @defgroup FLASH_Group1 FLASH Interface configuration functions
+     96            *  @brief   FLASH Interface configuration functions 
+     97           *
+     98          
+     99          @verbatim   
+    100           ===============================================================================
+    101                                 FLASH Interface configuration functions
+    102           ===============================================================================
+    103          
+    104             This group includes the following functions:
+    105              - void FLASH_SetLatency(uint32_t FLASH_Latency)
+    106                 To correctly read data from FLASH memory, the number of wait states (LATENCY) 
+    107                 must be correctly programmed according to the frequency of the CPU clock 
+    108                (HCLK) and the supply voltage of the device.
+    109           +-------------------------------------------------------------------------------------+     
+    110           | Latency       |                HCLK clock frequency (MHz)                           |
+    111           |               |---------------------------------------------------------------------|     
+    112           |               | voltage range  | voltage range  | voltage range   | voltage range   |
+    113           |               | 2.7 V - 3.6 V  | 2.4 V - 2.7 V  | 2.1 V - 2.4 V   | 1.8 V - 2.1 V   |
+    114           |---------------|----------------|----------------|-----------------|-----------------|              
+    115           |0WS(1CPU cycle)|0 < HCLK <= 30  |0 < HCLK <= 24  |0 < HCLK <= 18   |0 < HCLK <= 16   |
+    116           |---------------|----------------|----------------|-----------------|-----------------|   
+    117           |1WS(2CPU cycle)|30 < HCLK <= 60 |24 < HCLK <= 48 |18 < HCLK <= 36  |16 < HCLK <= 32  | 
+    118           |---------------|----------------|----------------|-----------------|-----------------|   
+    119           |2WS(3CPU cycle)|60 < HCLK <= 90 |48 < HCLK <= 72 |36 < HCLK <= 54  |32 < HCLK <= 48  |
+    120           |---------------|----------------|----------------|-----------------|-----------------| 
+    121           |3WS(4CPU cycle)|90 < HCLK <= 120|72 < HCLK <= 96 |54 < HCLK <= 72  |48 < HCLK <= 64  |
+    122           |---------------|----------------|----------------|-----------------|-----------------| 
+    123           |4WS(5CPU cycle)|      NA        |96 < HCLK <= 120|72 < HCLK <= 90  |64 < HCLK <= 80  |
+    124           |---------------|----------------|----------------|-----------------|-----------------| 
+    125           |5WS(6CPU cycle)|      NA        |      NA        |90 < HCLK <= 108 |80 < HCLK <= 96  | 
+    126           |---------------|----------------|----------------|-----------------|-----------------| 
+    127           |6WS(7CPU cycle)|      NA        |      NA        |108 < HCLK <= 120|96 < HCLK <= 112 | 
+    128           |---------------|----------------|----------------|-----------------|-----------------| 
+    129           |7WS(8CPU cycle)|      NA        |      NA        |     NA          |112 < HCLK <= 120| 
+    130           |***************|****************|****************|*****************|*****************|*****************************+
+    131           |               | voltage range  | voltage range  | voltage range   | voltage range   | voltage range 2.7 V - 3.6 V |
+    132           |               | 2.7 V - 3.6 V  | 2.4 V - 2.7 V  | 2.1 V - 2.4 V   | 1.8 V - 2.1 V   | with External Vpp = 9V      |
+    133           |---------------|----------------|----------------|-----------------|-----------------|-----------------------------| 
+    134           |Max Parallelism|      x32       |               x16                |       x8        |          x64                |              
+    135           |---------------|----------------|----------------|-----------------|-----------------|-----------------------------|   
+    136           |PSIZE[1:0]     |      10        |               01                 |       00        |           11                |
+    137           +-------------------------------------------------------------------------------------------------------------------+  
+    138              
+    139              - void FLASH_PrefetchBufferCmd(FunctionalState NewState)
+    140              - void FLASH_InstructionCacheCmd(FunctionalState NewState)
+    141              - void FLASH_DataCacheCmd(FunctionalState NewState)
+    142              - void FLASH_InstructionCacheReset(void)
+    143              - void FLASH_DataCacheReset(void)
+    144             
+    145             The unlock sequence is not needed for these functions.
+    146           
+    147          @endverbatim
+    148            * @{
+    149            */
+    150           
+    151          /**
+    152            * @brief  Sets the code latency value.
+    153            * @param  FLASH_Latency: specifies the FLASH Latency value.
+    154            *          This parameter can be one of the following values:
+    155            *            @arg FLASH_Latency_0: FLASH Zero Latency cycle
+    156            *            @arg FLASH_Latency_1: FLASH One Latency cycle
+    157            *            @arg FLASH_Latency_2: FLASH Two Latency cycles
+    158            *            @arg FLASH_Latency_3: FLASH Three Latency cycles
+    159            *            @arg FLASH_Latency_4: FLASH Four Latency cycles 
+    160            *            @arg FLASH_Latency_5: FLASH Five Latency cycles 
+    161            *            @arg FLASH_Latency_6: FLASH Six Latency cycles
+    162            *            @arg FLASH_Latency_7: FLASH Seven Latency cycles      
+    163            * @retval None
+    164            */
+    165          void FLASH_SetLatency(uint32_t FLASH_Latency)
+    166          {
+    167            /* Check the parameters */
+    168            assert_param(IS_FLASH_LATENCY(FLASH_Latency));
+    169            
+    170            /* Perform Byte access to FLASH_ACR[8:0] to set the Latency value */
+    171            *(__IO uint8_t *)ACR_BYTE0_ADDRESS = (uint8_t)FLASH_Latency;
+    172          }
+    173          
+    174          /**
+    175            * @brief  Enables or disables the Prefetch Buffer.
+    176            * @param  NewState: new state of the Prefetch Buffer.
+    177            *          This parameter  can be: ENABLE or DISABLE.
+    178            * @retval None
+    179            */
+    180          void FLASH_PrefetchBufferCmd(FunctionalState NewState)
+    181          {
+    182            /* Check the parameters */
+    183            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    184            
+    185            /* Enable or disable the Prefetch Buffer */
+    186            if(NewState != DISABLE)
+    187            {
+    188              FLASH->ACR |= FLASH_ACR_PRFTEN;
+    189            }
+    190            else
+    191            {
+    192              FLASH->ACR &= (~FLASH_ACR_PRFTEN);
+    193            }
+    194          }
+    195          
+    196          /**
+    197            * @brief  Enables or disables the Instruction Cache feature.
+    198            * @param  NewState: new state of the Instruction Cache.
+    199            *          This parameter  can be: ENABLE or DISABLE.
+    200            * @retval None
+    201            */
+    202          void FLASH_InstructionCacheCmd(FunctionalState NewState)
+    203          {
+    204            /* Check the parameters */
+    205            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    206            
+    207            if(NewState != DISABLE)
+    208            {
+    209              FLASH->ACR |= FLASH_ACR_ICEN;
+    210            }
+    211            else
+    212            {
+    213              FLASH->ACR &= (~FLASH_ACR_ICEN);
+    214            }
+    215          }
+    216          
+    217          /**
+    218            * @brief  Enables or disables the Data Cache feature.
+    219            * @param  NewState: new state of the Data Cache.
+    220            *          This parameter  can be: ENABLE or DISABLE.
+    221            * @retval None
+    222            */
+    223          void FLASH_DataCacheCmd(FunctionalState NewState)
+    224          {
+    225            /* Check the parameters */
+    226            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    227            
+    228            if(NewState != DISABLE)
+    229            {
+    230              FLASH->ACR |= FLASH_ACR_DCEN;
+    231            }
+    232            else
+    233            {
+    234              FLASH->ACR &= (~FLASH_ACR_DCEN);
+    235            }
+    236          }
+    237          
+    238          /**
+    239            * @brief  Resets the Instruction Cache.
+    240            * @note   This function must be used only when the Instruction Cache is disabled.  
+    241            * @param  None
+    242            * @retval None
+    243            */
+    244          void FLASH_InstructionCacheReset(void)
+    245          {
+    246            FLASH->ACR |= FLASH_ACR_ICRST;
+    247          }
+    248          
+    249          /**
+    250            * @brief  Resets the Data Cache.
+    251            * @note   This function must be used only when the Data Cache is disabled.  
+    252            * @param  None
+    253            * @retval None
+    254            */
+    255          void FLASH_DataCacheReset(void)
+    256          {
+    257            FLASH->ACR |= FLASH_ACR_DCRST;
+    258          }
+    259          
+    260          /**
+    261            * @}
+    262            */
+    263          
+    264          /** @defgroup FLASH_Group2 FLASH Memory Programming functions
+    265           *  @brief   FLASH Memory Programming functions
+    266           *
+    267          @verbatim   
+    268           ===============================================================================
+    269                                FLASH Memory Programming functions
+    270           ===============================================================================   
+    271          
+    272             This group includes the following functions:
+    273              - void FLASH_Unlock(void)
+    274              - void FLASH_Lock(void)
+    275              - FLASH_Status FLASH_EraseSector(uint32_t FLASH_Sector, uint8_t VoltageRange)
+    276              - FLASH_Status FLASH_EraseAllSectors(uint8_t VoltageRange)
+    277              - FLASH_Status FLASH_ProgramDoubleWord(uint32_t Address, uint64_t Data)
+    278              - FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data)
+    279              - FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data)
+    280              - FLASH_Status FLASH_ProgramByte(uint32_t Address, uint8_t Data)
+    281             
+    282             Any operation of erase or program should follow these steps:
+    283             1. Call the FLASH_Unlock() function to enable the FLASH control register access
+    284          
+    285             2. Call the desired function to erase sector(s) or program data
+    286          
+    287             3. Call the FLASH_Lock() function to disable the FLASH control register access
+    288                (recommended to protect the FLASH memory against possible unwanted operation)
+    289              
+    290          @endverbatim
+    291            * @{
+    292            */
+    293          
+    294          /**
+    295            * @brief  Unlocks the FLASH control register access
+    296            * @param  None
+    297            * @retval None
+    298            */
+    299          void FLASH_Unlock(void)
+    300          {
+    301            if((FLASH->CR & FLASH_CR_LOCK) != RESET)
+    302            {
+    303              /* Authorize the FLASH Registers access */
+    304              FLASH->KEYR = FLASH_KEY1;
+    305              FLASH->KEYR = FLASH_KEY2;
+    306            }  
+    307          }
+    308          
+    309          /**
+    310            * @brief  Locks the FLASH control register access
+    311            * @param  None
+    312            * @retval None
+    313            */
+    314          void FLASH_Lock(void)
+    315          {
+    316            /* Set the LOCK Bit to lock the FLASH Registers access */
+    317            FLASH->CR |= FLASH_CR_LOCK;
+    318          }
+    319          
+    320          /**
+    321            * @brief  Erases a specified FLASH Sector.
+    322            *   
+    323            * @param  FLASH_Sector: The Sector number to be erased.
+    324            *          This parameter can be a value between FLASH_Sector_0 and FLASH_Sector_11
+    325            *    
+    326            * @param  VoltageRange: The device voltage range which defines the erase parallelism.  
+    327            *          This parameter can be one of the following values:
+    328            *            @arg VoltageRange_1: when the device voltage range is 1.8V to 2.1V, 
+    329            *                                  the operation will be done by byte (8-bit) 
+    330            *            @arg VoltageRange_2: when the device voltage range is 2.1V to 2.7V,
+    331            *                                  the operation will be done by half word (16-bit)
+    332            *            @arg VoltageRange_3: when the device voltage range is 2.7V to 3.6V,
+    333            *                                  the operation will be done by word (32-bit)
+    334            *            @arg VoltageRange_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
+    335            *                                  the operation will be done by double word (64-bit)
+    336            *       
+    337            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    338            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    339            */
+    340          FLASH_Status _FLASH_EraseSector(uint32_t FLASH_Sector, uint8_t VoltageRange)
+    341          {
+    342            uint32_t tmp_psize = 0x0;
+    343            FLASH_Status status = FLASH_COMPLETE;
+    344          
+    345            /* Check the parameters */
+    346            assert_param(IS_FLASH_SECTOR(FLASH_Sector));
+    347            assert_param(IS_VOLTAGERANGE(VoltageRange));
+    348            
+    349            if(VoltageRange == VoltageRange_1)
+    350            {
+    351               tmp_psize = FLASH_PSIZE_BYTE;
+    352            }
+    353            else if(VoltageRange == VoltageRange_2)
+    354            {
+    355              tmp_psize = FLASH_PSIZE_HALF_WORD;
+    356            }
+    357            else if(VoltageRange == VoltageRange_3)
+    358            {
+    359              tmp_psize = FLASH_PSIZE_WORD;
+    360            }
+    361            else
+    362            {
+    363              tmp_psize = FLASH_PSIZE_DOUBLE_WORD;
+    364            }
+    365            /* Wait for last operation to be completed */
+    366            status = FLASH_WaitForLastOperation();
+    367            
+    368            if(status == FLASH_COMPLETE)
+    369            { 
+    370              /* if the previous operation is completed, proceed to erase the sector */
+    371              FLASH->CR &= CR_PSIZE_MASK;
+    372              FLASH->CR |= tmp_psize;
+    373              FLASH->CR &= SECTOR_MASK;
+    374              FLASH->CR |= FLASH_CR_SER | FLASH_Sector;
+    375              FLASH->CR |= FLASH_CR_STRT;
+    376              
+    377              /* Wait for last operation to be completed */
+    378              status = FLASH_WaitForLastOperation();
+    379              
+    380              /* if the erase operation is completed, disable the SER Bit */
+    381              FLASH->CR &= (~FLASH_CR_SER);
+    382              FLASH->CR &= SECTOR_MASK; 
+    383            }
+    384            /* Return the Erase Status */
+    385            return status;
+    386          }
+    387          
+    388          /**
+    389            * @brief  Erases all FLASH Sectors.
+    390            *    
+    391            * @param  VoltageRange: The device voltage range which defines the erase parallelism.  
+    392            *          This parameter can be one of the following values:
+    393            *            @arg VoltageRange_1: when the device voltage range is 1.8V to 2.1V, 
+    394            *                                  the operation will be done by byte (8-bit) 
+    395            *            @arg VoltageRange_2: when the device voltage range is 2.1V to 2.7V,
+    396            *                                  the operation will be done by half word (16-bit)
+    397            *            @arg VoltageRange_3: when the device voltage range is 2.7V to 3.6V,
+    398            *                                  the operation will be done by word (32-bit)
+    399            *            @arg VoltageRange_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
+    400            *                                  the operation will be done by double word (64-bit)
+    401            *       
+    402            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    403            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    404            */
+    405          FLASH_Status _FLASH_EraseAllSectors(uint8_t VoltageRange)
+    406          {
+    407            uint32_t tmp_psize = 0x0;
+    408            FLASH_Status status = FLASH_COMPLETE;
+    409            
+    410            /* Wait for last operation to be completed */
+    411            status = FLASH_WaitForLastOperation();
+    412            assert_param(IS_VOLTAGERANGE(VoltageRange));
+    413            
+    414            if(VoltageRange == VoltageRange_1)
+    415            {
+    416               tmp_psize = FLASH_PSIZE_BYTE;
+    417            }
+    418            else if(VoltageRange == VoltageRange_2)
+    419            {
+    420              tmp_psize = FLASH_PSIZE_HALF_WORD;
+    421            }
+    422            else if(VoltageRange == VoltageRange_3)
+    423            {
+    424              tmp_psize = FLASH_PSIZE_WORD;
+    425            }
+    426            else
+    427            {
+    428              tmp_psize = FLASH_PSIZE_DOUBLE_WORD;
+    429            }  
+    430            if(status == FLASH_COMPLETE)
+    431            {
+    432              /* if the previous operation is completed, proceed to erase all sectors */
+    433               FLASH->CR &= CR_PSIZE_MASK;
+    434               FLASH->CR |= tmp_psize;
+    435               FLASH->CR |= FLASH_CR_MER;
+    436               FLASH->CR |= FLASH_CR_STRT;
+    437              
+    438              /* Wait for last operation to be completed */
+    439              status = FLASH_WaitForLastOperation();
+    440          
+    441              /* if the erase operation is completed, disable the MER Bit */
+    442              FLASH->CR &= (~FLASH_CR_MER);
+    443          
+    444            }   
+    445            /* Return the Erase Status */
+    446            return status;
+    447          }
+    448          
+    449          /**
+    450            * @brief  Programs a double word (64-bit) at a specified address.
+    451            * @note   This function must be used when the device voltage range is from
+    452            *         2.7V to 3.6V and an External Vpp is present.           
+    453            * @param  Address: specifies the address to be programmed.
+    454            * @param  Data: specifies the data to be programmed.
+    455            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    456            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    457            */
+    458          FLASH_Status _FLASH_ProgramDoubleWord(uint32_t Address, uint64_t Data)
+    459          {
+    460            FLASH_Status status = FLASH_COMPLETE;
+    461          
+    462            /* Check the parameters */
+    463            assert_param(IS_FLASH_ADDRESS(Address));
+    464          
+    465            /* Wait for last operation to be completed */
+    466            status = FLASH_WaitForLastOperation();
+    467            
+    468            if(status == FLASH_COMPLETE)
+    469            {
+    470              /* if the previous operation is completed, proceed to program the new data */
+    471              FLASH->CR &= CR_PSIZE_MASK;
+    472              FLASH->CR |= FLASH_PSIZE_DOUBLE_WORD;
+    473              FLASH->CR |= FLASH_CR_PG;
+    474            
+    475              *(__IO uint64_t*)Address = Data;
+    476                  
+    477              /* Wait for last operation to be completed */
+    478              status = FLASH_WaitForLastOperation();
+    479          
+    480              /* if the program operation is completed, disable the PG Bit */
+    481              FLASH->CR &= (~FLASH_CR_PG);
+    482            } 
+    483            /* Return the Program Status */
+    484            return status;
+    485          }
+    486          
+    487          /**
+    488            * @brief  Programs a word (32-bit) at a specified address.
+    489            * @param  Address: specifies the address to be programmed.
+    490            *         This parameter can be any address in Program memory zone or in OTP zone.  
+    491            * @note   This function must be used when the device voltage range is from 2.7V to 3.6V. 
+    492            * @param  Data: specifies the data to be programmed.
+    493            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    494            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    495            */
+    496          FLASH_Status _FLASH_ProgramWord(uint32_t Address, uint32_t Data)
+    497          {
+    498            FLASH_Status status = FLASH_COMPLETE;
+    499          
+    500            /* Check the parameters */
+    501            assert_param(IS_FLASH_ADDRESS(Address));
+    502          
+    503            /* Wait for last operation to be completed */
+    504            status = FLASH_WaitForLastOperation();
+    505            
+    506            if(status == FLASH_COMPLETE)
+    507            {
+    508              /* if the previous operation is completed, proceed to program the new data */
+    509              FLASH->CR &= CR_PSIZE_MASK;
+    510              FLASH->CR |= FLASH_PSIZE_WORD;
+    511              FLASH->CR |= FLASH_CR_PG;
+    512            
+    513              *(__IO uint32_t*)Address = Data;
+    514                  
+    515              /* Wait for last operation to be completed */
+    516              status = FLASH_WaitForLastOperation();
+    517          
+    518              /* if the program operation is completed, disable the PG Bit */
+    519              FLASH->CR &= (~FLASH_CR_PG);
+    520            } 
+    521            /* Return the Program Status */
+    522            return status;
+    523          }
+    524          
+    525          /**
+    526            * @brief  Programs a half word (16-bit) at a specified address. 
+    527            * @note   This function must be used when the device voltage range is from 2.1V to 3.6V.               
+    528            * @param  Address: specifies the address to be programmed.
+    529            *         This parameter can be any address in Program memory zone or in OTP zone.  
+    530            * @param  Data: specifies the data to be programmed.
+    531            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    532            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    533            */
+    534          FLASH_Status _FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data)
+    535          {
+    536            FLASH_Status status = FLASH_COMPLETE;
+    537          
+    538            /* Check the parameters */
+    539            assert_param(IS_FLASH_ADDRESS(Address));
+    540          
+    541            /* Wait for last operation to be completed */
+    542            status = FLASH_WaitForLastOperation();
+    543            
+    544            if(status == FLASH_COMPLETE)
+    545            {
+    546              /* if the previous operation is completed, proceed to program the new data */
+    547              FLASH->CR &= CR_PSIZE_MASK;
+    548              FLASH->CR |= FLASH_PSIZE_HALF_WORD;
+    549              FLASH->CR |= FLASH_CR_PG;
+    550            
+    551              *(__IO uint16_t*)Address = Data;
+    552                  
+    553              /* Wait for last operation to be completed */
+    554              status = FLASH_WaitForLastOperation();
+    555          
+    556              /* if the program operation is completed, disable the PG Bit */
+    557              FLASH->CR &= (~FLASH_CR_PG);
+    558            } 
+    559            /* Return the Program Status */
+    560            return status;
+    561          }
+    562          
+    563          /**
+    564            * @brief  Programs a byte (8-bit) at a specified address.
+    565            * @note   This function can be used within all the device supply voltage ranges.               
+    566            * @param  Address: specifies the address to be programmed.
+    567            *         This parameter can be any address in Program memory zone or in OTP zone.  
+    568            * @param  Data: specifies the data to be programmed.
+    569            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    570            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    571            */
+    572          FLASH_Status _FLASH_ProgramByte(uint32_t Address, uint8_t Data)
+    573          {
+    574            FLASH_Status status = FLASH_COMPLETE;
+    575          
+    576            /* Check the parameters */
+    577            assert_param(IS_FLASH_ADDRESS(Address));
+    578          
+    579            /* Wait for last operation to be completed */
+    580            status = FLASH_WaitForLastOperation();
+    581            
+    582            if(status == FLASH_COMPLETE)
+    583            {
+    584              /* if the previous operation is completed, proceed to program the new data */
+    585              FLASH->CR &= CR_PSIZE_MASK;
+    586              FLASH->CR |= FLASH_PSIZE_BYTE;
+    587              FLASH->CR |= FLASH_CR_PG;
+    588            
+    589              *(__IO uint8_t*)Address = Data;
+    590                  
+    591              /* Wait for last operation to be completed */
+    592              status = FLASH_WaitForLastOperation();
+    593          
+    594              /* if the program operation is completed, disable the PG Bit */
+    595              FLASH->CR &= (~FLASH_CR_PG);
+    596            } 
+    597          
+    598            /* Return the Program Status */
+    599            return status;
+    600          }
+    601          
+    602          /**
+    603            * @}
+    604            */
+    605          
+    606          /** @defgroup FLASH_Group3 Option Bytes Programming functions
+    607           *  @brief   Option Bytes Programming functions 
+    608           *
+    609          @verbatim   
+    610           ===============================================================================
+    611                                  Option Bytes Programming functions
+    612           ===============================================================================  
+    613           
+    614             This group includes the following functions:
+    615             - void FLASH_OB_Unlock(void)
+    616             - void FLASH_OB_Lock(void)
+    617             - void FLASH_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState)
+    618             - void FLASH_OB_RDPConfig(uint8_t OB_RDP)
+    619             - void FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY)
+    620             - void FLASH_OB_BORConfig(uint8_t OB_BOR)
+    621             - FLASH_Status FLASH_ProgramOTP(uint32_t Address, uint32_t Data)							
+    622             - FLASH_Status FLASH_OB_Launch(void)
+    623             - uint32_t FLASH_OB_GetUser(void)						
+    624             - uint8_t FLASH_OB_GetWRP(void)						
+    625             - uint8_t FLASH_OB_GetRDP(void)							
+    626             - uint8_t FLASH_OB_GetBOR(void)
+    627             
+    628             Any operation of erase or program should follow these steps:
+    629             1. Call the FLASH_OB_Unlock() function to enable the FLASH option control register access
+    630          
+    631             2. Call one or several functions to program the desired Option Bytes:
+    632                - void FLASH_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState) => to Enable/Disable 
+    633                  the desired sector write protection
+    634                - void FLASH_OB_RDPConfig(uint8_t OB_RDP) => to set the desired read Protection Level
+    635                - void FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY) => to configure 
+    636                  the user Option Bytes.
+    637                - void FLASH_OB_BORConfig(uint8_t OB_BOR) => to set the BOR Level 			 
+    638          
+    639             3. Once all needed Option Bytes to be programmed are correctly written, call the
+    640                FLASH_OB_Launch() function to launch the Option Bytes programming process.
+    641               
+    642               @note When changing the IWDG mode from HW to SW or from SW to HW, a system 
+    643                     reset is needed to make the change effective.  
+    644          
+    645             4. Call the FLASH_OB_Lock() function to disable the FLASH option control register
+    646                access (recommended to protect the Option Bytes against possible unwanted operations)
+    647              
+    648          @endverbatim
+    649            * @{
+    650            */
+    651          
+    652          /**
+    653            * @brief  Unlocks the FLASH Option Control Registers access.
+    654            * @param  None
+    655            * @retval None
+    656            */
+    657          void FLASH_OB_Unlock(void)
+    658          {
+    659            if((FLASH->OPTCR & FLASH_OPTCR_OPTLOCK) != RESET)
+    660            {
+    661              /* Authorizes the Option Byte register programming */
+    662              FLASH->OPTKEYR = FLASH_OPT_KEY1;
+    663              FLASH->OPTKEYR = FLASH_OPT_KEY2;
+    664            }  
+    665          }
+    666          
+    667          /**
+    668            * @brief  Locks the FLASH Option Control Registers access.
+    669            * @param  None
+    670            * @retval None
+    671            */
+    672          void FLASH_OB_Lock(void)
+    673          {
+    674            /* Set the OPTLOCK Bit to lock the FLASH Option Byte Registers access */
+    675            FLASH->OPTCR |= FLASH_OPTCR_OPTLOCK;
+    676          }
+    677          
+    678          /**
+    679            * @brief  Enables or disables the write protection of the desired sectors
+    680            * @param  OB_WRP: specifies the sector(s) to be write protected or unprotected.
+    681            *          This parameter can be one of the following values:
+    682            *            @arg OB_WRP: A value between OB_WRP_Sector0 and OB_WRP_Sector11                      
+    683            *            @arg OB_WRP_Sector_All
+    684            * @param  Newstate: new state of the Write Protection.
+    685            *          This parameter can be: ENABLE or DISABLE.
+    686            * @retval None  
+    687            */
+    688          void FLASH_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState)
+    689          { 
+    690            FLASH_Status status = FLASH_COMPLETE;
+    691            
+    692            /* Check the parameters */
+    693            assert_param(IS_OB_WRP(OB_WRP));
+    694            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    695              
+    696            status = FLASH_WaitForLastOperation();
+    697          
+    698            if(status == FLASH_COMPLETE)
+    699            { 
+    700              if(NewState != DISABLE)
+    701              {
+    702                *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (~OB_WRP);
+    703              }
+    704              else
+    705              {
+    706                *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)OB_WRP;
+    707              }
+    708            }
+    709          }
+    710          
+    711          /**
+    712            * @brief  Sets the read protection level.
+    713            * @param  OB_RDP: specifies the read protection level.
+    714            *          This parameter can be one of the following values:
+    715            *            @arg OB_RDP_Level_0: No protection
+    716            *            @arg OB_RDP_Level_1: Read protection of the memory
+    717            *            @arg OB_RDP_Level_2: Full chip protection
+    718            *   
+    719            * !!!Warning!!! When enabling OB_RDP level 2 it's no more possible to go back to level 1 or 0
+    720            *    
+    721            * @retval None
+    722            */
+    723          void FLASH_OB_RDPConfig(uint8_t OB_RDP)
+    724          {
+    725            FLASH_Status status = FLASH_COMPLETE;
+    726          
+    727            /* Check the parameters */
+    728            assert_param(IS_OB_RDP(OB_RDP));
+    729          
+    730            status = FLASH_WaitForLastOperation();
+    731          
+    732            if(status == FLASH_COMPLETE)
+    733            {
+    734              *(__IO uint8_t*)OPTCR_BYTE1_ADDRESS = OB_RDP;
+    735          
+    736            }
+    737          }
+    738          
+    739          /**
+    740            * @brief  Programs the FLASH User Option Byte: IWDG_SW / RST_STOP / RST_STDBY.    
+    741            * @param  OB_IWDG: Selects the IWDG mode
+    742            *          This parameter can be one of the following values:
+    743            *            @arg OB_IWDG_SW: Software IWDG selected
+    744            *            @arg OB_IWDG_HW: Hardware IWDG selected
+    745            * @param  OB_STOP: Reset event when entering STOP mode.
+    746            *          This parameter  can be one of the following values:
+    747            *            @arg OB_STOP_NoRST: No reset generated when entering in STOP
+    748            *            @arg OB_STOP_RST: Reset generated when entering in STOP
+    749            * @param  OB_STDBY: Reset event when entering Standby mode.
+    750            *          This parameter  can be one of the following values:
+    751            *            @arg OB_STDBY_NoRST: No reset generated when entering in STANDBY
+    752            *            @arg OB_STDBY_RST: Reset generated when entering in STANDBY
+    753            * @retval None
+    754            */
+    755          void FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY)
+    756          {
+    757            uint8_t optiontmp = 0xFF;
+    758            FLASH_Status status = FLASH_COMPLETE; 
+    759          
+    760            /* Check the parameters */
+    761            assert_param(IS_OB_IWDG_SOURCE(OB_IWDG));
+    762            assert_param(IS_OB_STOP_SOURCE(OB_STOP));
+    763            assert_param(IS_OB_STDBY_SOURCE(OB_STDBY));
+    764          
+    765            /* Wait for last operation to be completed */
+    766            status = FLASH_WaitForLastOperation();
+    767            
+    768            if(status == FLASH_COMPLETE)
+    769            { 
+    770              /* Mask OPTLOCK, OPTSTRT and BOR_LEV bits */
+    771              optiontmp =  (uint8_t)((*(__IO uint8_t *)OPTCR_BYTE0_ADDRESS) & (uint8_t)0x0F); 
+    772          
+    773              /* Update User Option Byte */
+    774              *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS = OB_IWDG | (uint8_t)(OB_STDBY | (uint8_t)(OB_STOP | ((uint8_t)optiontmp))); 
+    775            }  
+    776          }
+    777          
+    778          /**
+    779            * @brief  Sets the BOR Level. 
+    780            * @param  OB_BOR: specifies the Option Bytes BOR Reset Level.
+    781            *          This parameter can be one of the following values:
+    782            *            @arg OB_BOR_LEVEL3: Supply voltage ranges from 2.7 to 3.6 V
+    783            *            @arg OB_BOR_LEVEL2: Supply voltage ranges from 2.4 to 2.7 V
+    784            *            @arg OB_BOR_LEVEL1: Supply voltage ranges from 2.1 to 2.4 V
+    785            *            @arg OB_BOR_OFF: Supply voltage ranges from 1.62 to 2.1 V
+    786            * @retval None
+    787            */
+    788          void FLASH_OB_BORConfig(uint8_t OB_BOR)
+    789          {
+    790            /* Check the parameters */
+    791            assert_param(IS_OB_BOR(OB_BOR));
+    792          
+    793            /* Set the BOR Level */
+    794            *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS &= (~FLASH_OPTCR_BOR_LEV);
+    795            *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS |= OB_BOR;
+    796          
+    797          }
+    798          
+    799          /**
+    800            * @brief  Launch the option byte loading.
+    801            * @param  None
+    802            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    803            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    804            */
+    805          FLASH_Status FLASH_OB_Launch(void)
+    806          {
+    807            FLASH_Status status = FLASH_COMPLETE;
+    808          
+    809            /* Set the OPTSTRT bit in OPTCR register */
+    810            *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS |= FLASH_OPTCR_OPTSTRT;
+    811          
+    812            /* Wait for last operation to be completed */
+    813            status = FLASH_WaitForLastOperation();
+    814          
+    815            return status;
+    816          }
+    817          
+    818          /**
+    819            * @brief  Returns the FLASH User Option Bytes values.
+    820            * @param  None
+    821            * @retval The FLASH User Option Bytes values: IWDG_SW(Bit0), RST_STOP(Bit1)
+    822            *         and RST_STDBY(Bit2).
+    823            */
+    824          uint8_t FLASH_OB_GetUser(void)
+    825          {
+    826            /* Return the User Option Byte */
+    827            return (uint8_t)(FLASH->OPTCR >> 5);
+    828          }
+    829          
+    830          /**
+    831            * @brief  Returns the FLASH Write Protection Option Bytes value.
+    832            * @param  None
+    833            * @retval The FLASH Write Protection  Option Bytes value
+    834            */
+    835          uint16_t FLASH_OB_GetWRP(void)
+    836          {
+    837            /* Return the FLASH write protection Register value */
+    838            return (*(__IO uint16_t *)(OPTCR_BYTE2_ADDRESS));
+    839          }
+    840          
+    841          /**
+    842            * @brief  Returns the FLASH Read Protection level.
+    843            * @param  None
+    844            * @retval FLASH ReadOut Protection Status:
+    845            *           - SET, when OB_RDP_Level_1 or OB_RDP_Level_2 is set
+    846            *           - RESET, when OB_RDP_Level_0 is set
+    847            */
+    848          FlagStatus FLASH_OB_GetRDP(void)
+    849          {
+    850            FlagStatus readstatus = RESET;
+    851          
+    852            if ((*(__IO uint8_t*)(OPTCR_BYTE1_ADDRESS) != (uint8_t)OB_RDP_Level_0))
+    853            {
+    854              readstatus = SET;
+    855            }
+    856            else
+    857            {
+    858              readstatus = RESET;
+    859            }
+    860            return readstatus;
+    861          }
+    862          
+    863          /**
+    864            * @brief  Returns the FLASH BOR level.
+    865            * @param  None
+    866            * @retval The FLASH BOR level:
+    867            *           - OB_BOR_LEVEL3: Supply voltage ranges from 2.7 to 3.6 V
+    868            *           - OB_BOR_LEVEL2: Supply voltage ranges from 2.4 to 2.7 V
+    869            *           - OB_BOR_LEVEL1: Supply voltage ranges from 2.1 to 2.4 V
+    870            *           - OB_BOR_OFF   : Supply voltage ranges from 1.62 to 2.1 V  
+    871            */
+    872          uint8_t FLASH_OB_GetBOR(void)
+    873          {
+    874            /* Return the FLASH BOR level */
+    875            return (uint8_t)(*(__IO uint8_t *)(OPTCR_BYTE0_ADDRESS) & (uint8_t)0x0C);
+    876          }
+    877          
+    878          /**
+    879            * @}
+    880            */
+    881          
+    882          /** @defgroup FLASH_Group4 Interrupts and flags management functions
+    883           *  @brief   Interrupts and flags management functions
+    884           *
+    885          @verbatim   
+    886           ===============================================================================
+    887                            Interrupts and flags management functions
+    888           ===============================================================================  
+    889          
+    890          @endverbatim
+    891            * @{
+    892            */
+    893          
+    894          /**
+    895            * @brief  Enables or disables the specified FLASH interrupts.
+    896            * @param  FLASH_IT: specifies the FLASH interrupt sources to be enabled or disabled.
+    897            *          This parameter can be any combination of the following values:
+    898            *            @arg FLASH_IT_ERR: FLASH Error Interrupt
+    899            *            @arg FLASH_IT_EOP: FLASH end of operation Interrupt
+    900            * @retval None 
+    901            */
+    902          void FLASH_ITConfig(uint32_t FLASH_IT, FunctionalState NewState)
+    903          {
+    904            /* Check the parameters */
+    905            assert_param(IS_FLASH_IT(FLASH_IT)); 
+    906            assert_param(IS_FUNCTIONAL_STATE(NewState));
+    907          
+    908            if(NewState != DISABLE)
+    909            {
+    910              /* Enable the interrupt sources */
+    911              FLASH->CR |= FLASH_IT;
+    912            }
+    913            else
+    914            {
+    915              /* Disable the interrupt sources */
+    916              FLASH->CR &= ~(uint32_t)FLASH_IT;
+    917            }
+    918          }
+    919          
+    920          /**
+    921            * @brief  Checks whether the specified FLASH flag is set or not.
+    922            * @param  FLASH_FLAG: specifies the FLASH flag to check.
+    923            *          This parameter can be one of the following values:
+    924            *            @arg FLASH_FLAG_EOP: FLASH End of Operation flag 
+    925            *            @arg FLASH_FLAG_OPERR: FLASH operation Error flag 
+    926            *            @arg FLASH_FLAG_WRPERR: FLASH Write protected error flag 
+    927            *            @arg FLASH_FLAG_PGAERR: FLASH Programming Alignment error flag
+    928            *            @arg FLASH_FLAG_PGPERR: FLASH Programming Parallelism error flag
+    929            *            @arg FLASH_FLAG_PGSERR: FLASH Programming Sequence error flag
+    930            *            @arg FLASH_FLAG_BSY: FLASH Busy flag
+    931            * @retval The new state of FLASH_FLAG (SET or RESET).
+    932            */
+    933          FlagStatus FLASH_GetFlagStatus(uint32_t FLASH_FLAG)
+    934          {
+    935            FlagStatus bitstatus = RESET;
+    936            /* Check the parameters */
+    937            assert_param(IS_FLASH_GET_FLAG(FLASH_FLAG));
+    938          
+    939            if((FLASH->SR & FLASH_FLAG) != (uint32_t)RESET)
+    940            {
+    941              bitstatus = SET;
+    942            }
+    943            else
+    944            {
+    945              bitstatus = RESET;
+    946            }
+    947            /* Return the new state of FLASH_FLAG (SET or RESET) */
+    948            return bitstatus; 
+    949          }
+    950          
+    951          /**
+    952            * @brief  Clears the FLASH's pending flags.
+    953            * @param  FLASH_FLAG: specifies the FLASH flags to clear.
+    954            *          This parameter can be any combination of the following values:
+    955            *            @arg FLASH_FLAG_EOP: FLASH End of Operation flag 
+    956            *            @arg FLASH_FLAG_OPERR: FLASH operation Error flag 
+    957            *            @arg FLASH_FLAG_WRPERR: FLASH Write protected error flag 
+    958            *            @arg FLASH_FLAG_PGAERR: FLASH Programming Alignment error flag 
+    959            *            @arg FLASH_FLAG_PGPERR: FLASH Programming Parallelism error flag
+    960            *            @arg FLASH_FLAG_PGSERR: FLASH Programming Sequence error flag
+    961            * @retval None
+    962            */
+    963          void FLASH_ClearFlag(uint32_t FLASH_FLAG)
+    964          {
+    965            /* Check the parameters */
+    966            assert_param(IS_FLASH_CLEAR_FLAG(FLASH_FLAG));
+    967            
+    968            /* Clear the flags */
+    969            FLASH->SR = FLASH_FLAG;
+    970          }
+    971          
+    972          /**
+    973            * @brief  Returns the FLASH Status.
+    974            * @param  None
+    975            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+    976            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+    977            */
+    978          FLASH_Status FLASH_GetStatus(void)
+    979          {
+    980            FLASH_Status flashstatus = FLASH_COMPLETE;
+    981            
+    982            if((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY) 
+    983            {
+    984              flashstatus = FLASH_BUSY;
+    985            }
+    986            else 
+    987            {  
+    988              if((FLASH->SR & FLASH_FLAG_WRPERR) != (uint32_t)0x00)
+    989              { 
+    990                flashstatus = FLASH_ERROR_WRP;
+    991              }
+    992              else 
+    993              {
+    994                if((FLASH->SR & (uint32_t)0xEF) != (uint32_t)0x00)
+    995                {
+    996                  flashstatus = FLASH_ERROR_PROGRAM; 
+    997                }
+    998                else
+    999                {
+   1000                  if((FLASH->SR & FLASH_FLAG_OPERR) != (uint32_t)0x00)
+   1001                  {
+   1002                    flashstatus = FLASH_ERROR_OPERATION;
+   1003                  }
+   1004                  else
+   1005                  {
+   1006                    flashstatus = FLASH_COMPLETE;
+   1007                  }
+   1008                }
+   1009              }
+   1010            }
+   1011            /* Return the FLASH Status */
+   1012            return flashstatus;
+   1013          }
+   1014          
+   1015          /**
+   1016            * @brief  Waits for a FLASH operation to complete.
+   1017            * @param  None
+   1018            * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+   1019            *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+   1020            */
+   1021          FLASH_Status FLASH_WaitForLastOperation(void)
+   1022          { 
+   1023            __IO FLASH_Status status = FLASH_COMPLETE;
+   1024             
+   1025            /* Check for the FLASH Status */
+   1026            status = FLASH_GetStatus();
+   1027          
+   1028            /* Wait for the FLASH operation to complete by polling on BUSY flag to be reset.
+   1029               Even if the FLASH operation fails, the BUSY flag will be reset and an error
+   1030               flag will be set */
+   1031            while(status == FLASH_BUSY)
+   1032            {
+   1033              status = FLASH_GetStatus();
+   1034            }
+   1035            /* Return the operation status */
+   1036            return status;
+   1037          }
+   1038          
+   1039          /**
+   1040            * @}
+   1041            */ 
+   1042          
+   1043          /**
+   1044            * @}
+   1045            */ 
+   1046          
+   1047          /**
+   1048            * @}
+   1049            */ 
+   1050          
+   1051          /**
+   1052            * @}
+   1053            */
+   1054          
+   1055          /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   FLASH_ClearFlag
+       0   FLASH_DataCacheCmd
+       0   FLASH_DataCacheReset
+       0   FLASH_GetFlagStatus
+       0   FLASH_GetStatus
+       0   FLASH_ITConfig
+       0   FLASH_InstructionCacheCmd
+       0   FLASH_InstructionCacheReset
+       0   FLASH_Lock
+       0   FLASH_OB_BORConfig
+       0   FLASH_OB_GetBOR
+       0   FLASH_OB_GetRDP
+       0   FLASH_OB_GetUser
+       0   FLASH_OB_GetWRP
+       8   FLASH_OB_Launch
+         8   -> FLASH_WaitForLastOperation
+       0   FLASH_OB_Lock
+      16   FLASH_OB_RDPConfig
+        16   -> FLASH_WaitForLastOperation
+       0   FLASH_OB_Unlock
+      24   FLASH_OB_UserConfig
+        24   -> FLASH_WaitForLastOperation
+      16   FLASH_OB_WRPConfig
+        16   -> FLASH_WaitForLastOperation
+       0   FLASH_PrefetchBufferCmd
+       0   FLASH_SetLatency
+       0   FLASH_Unlock
+       8   FLASH_WaitForLastOperation
+         8   -> FLASH_GetStatus
+      24   _FLASH_EraseAllSectors
+        24   -> FLASH_WaitForLastOperation
+      24   _FLASH_EraseSector
+        24   -> FLASH_WaitForLastOperation
+      24   _FLASH_ProgramByte
+        24   -> FLASH_WaitForLastOperation
+      24   _FLASH_ProgramDoubleWord
+        24   -> FLASH_WaitForLastOperation
+      24   _FLASH_ProgramHalfWord
+        24   -> FLASH_WaitForLastOperation
+      24   _FLASH_ProgramWord
+        24   -> FLASH_WaitForLastOperation
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable28
+       4  ??DataTable28_1
+       4  ??DataTable28_10
+       4  ??DataTable28_11
+       4  ??DataTable28_2
+       4  ??DataTable28_3
+       4  ??DataTable28_4
+       4  ??DataTable28_5
+       4  ??DataTable28_6
+       4  ??DataTable28_7
+       4  ??DataTable28_8
+       4  ??DataTable28_9
+       6  FLASH_ClearFlag
+      36  FLASH_DataCacheCmd
+      14  FLASH_DataCacheReset
+      22  FLASH_GetFlagStatus
+      52  FLASH_GetStatus
+      28  FLASH_ITConfig
+      36  FLASH_InstructionCacheCmd
+      14  FLASH_InstructionCacheReset
+      14  FLASH_Lock
+      18  FLASH_OB_BORConfig
+      10  FLASH_OB_GetBOR
+      22  FLASH_OB_GetRDP
+      10  FLASH_OB_GetUser
+       8  FLASH_OB_GetWRP
+      22  FLASH_OB_Launch
+      12  FLASH_OB_Lock
+      24  FLASH_OB_RDPConfig
+      20  FLASH_OB_Unlock
+      52  FLASH_OB_UserConfig
+      48  FLASH_OB_WRPConfig
+      36  FLASH_PrefetchBufferCmd
+       8  FLASH_SetLatency
+      28  FLASH_Unlock
+      40  FLASH_WaitForLastOperation
+     118  _FLASH_EraseAllSectors
+     144  _FLASH_EraseSector
+      66  _FLASH_ProgramByte
+      78  _FLASH_ProgramDoubleWord
+      70  _FLASH_ProgramHalfWord
+      70  _FLASH_ProgramWord
+
+ 
+ 1'174 bytes in section .text
+ 
+ 1'174 bytes of CODE memory
+
+Errors: none
+Warnings: none

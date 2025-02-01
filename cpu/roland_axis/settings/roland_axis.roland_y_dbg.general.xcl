@@ -1,0 +1,15 @@
+C:\iar\ewarm-9.60.2\arm\bin\armPROC.dll
+
+ C:\iar\ewarm-9.60.2\arm\bin\armSTLINK.dll
+
+ D:\proj\velograph\roland\cpu\roland_axis\roland_y_dbg\Exe\RTOSDemo.out
+
+ --plugin=C:\iar\ewarm-9.60.2\arm\bin\armLibSupportUniversal.dll
+
+ --device_macro=C:\iar\ewarm-9.60.2\arm/config/debugger/ST/STM32F2xx.dmac
+
+ --flash_loader=C:\iar\ewarm-9.60.2\arm/config/flashloader/ST/FlashSTM32F205xE.board
+
+ 
+
+

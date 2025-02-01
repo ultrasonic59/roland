@@ -1,0 +1,29 @@
+# ninja log v5
+29	411	7601346234199296	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/drv_9119342922082540178.dir/app_can_cmds.o	58f8e14828ffdd3c
+14	158	7601346231926993	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/Board_7221520210927654578.dir/retarget.o	1d1606ad35c2619
+32	305	7601346233240563	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/FreeRTOS_1129108015262781380.dir/list.o	56db0f7cdec4e5ad
+12	135	7601346231696497	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/Board_7221520210927654578.dir/my_misc.o	2a38d3ccfa43be02
+38	529	7601346235579665	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/FreeRTOS_1129108015262781380.dir/tasks.o	e7dd398df14f4ea3
+26	299	7601346233205401	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/FreeRTOS_1129108015262781380.dir/heap_2.o	d7cb3862a85107f0
+10	181	7601346232140613	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/Board_7221520210927654578.dir/main.o	c1f29602b804324f
+16	214	7601346232466080	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/dbg_456133768103443040.dir/printk1.o	b674238c7394f373
+302	560	7601346235926728	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/ST Library_14760386059681792492.dir/stm32f2xx_tim.o	33d2719f77924181
+21	277	7601346233060115	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/Board_7221520210927654578.dir/zzzz.o	dc445ddd2c38d7b4
+388	495	7601346235289210	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/startup_5253055491327143397.dir/stm32f2xx_it.o	7739c0d70a6df607
+1	283	7601346233090134	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/Board_7221520210927654578.dir/motor_tsk.o	ddef13bb8f4800e7
+159	227	7601346232606222	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/FreeRTOS_1129108015262781380.dir/port.o	8762af9e4d58dbe
+35	449	7601346234743747	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/drv_9119342922082540178.dir/can_drv.o	140300025791113c
+216	386	7601346234086464	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/FreeRTOS_1129108015262781380.dir/queue.o	50f72ee17ba15795
+408	424	7601346234622478	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/FreeRTOS_1129108015262781380.dir/portasm.o	e5dd187258e11c03
+18	453	7601346234733752	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/Board_7221520210927654578.dir/mstep_board.o	18d76bbf07e8b133
+136	243	7601346232724550	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/ST Library_14760386059681792492.dir/misc.o	62d1902fd71b147f
+426	451	7601346234868995	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/startup_5253055491327143397.dir/startup_stm32f2xx.o	fe0bbf39bbacad5
+228	379	7601346234086464	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/ST Library_14760386059681792492.dir/stm32f2xx_gpio - Copy.o	3c138c082be03ff2
+245	454	7601346234793769	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/ST Library_14760386059681792492.dir/stm32f2xx_rcc - Copy.o	67e8d6c3076dd17
+182	406	7601346234329614	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/ST Library_14760386059681792492.dir/stm32f2xx_can.o	2dcc71d44a02a94f
+412	519	7601346235539667	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/ST Library_14760386059681792492.dir/system_stm32f2xx.o	20b5510b39f0d20d
+285	430	7601346234576499	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/ST Library_14760386059681792492.dir/stm32f2xx_spi.o	e4c339e64366f2ad
+280	475	7601346235088941	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/ST Library_14760386059681792492.dir/stm32f2xx_flash - Copy.o	758d315c1a002b
+307	457	7601346234818940	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/can_thr.o	9714e4ccf79b95c3
+381	540	7601346235746571	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Obj/ST Library_14760386059681792492.dir/stm32f2xx_usart.o	5f414433586d9f76
+562	616	7601346236528130	D:/proj/velograph/roland/cpu/roland_axis/roland_y_dbg/Exe/RTOSDemo.out	9456b3f27db9a762

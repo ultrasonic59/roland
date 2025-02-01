@@ -1,0 +1,270 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.60.2.399/W64 for ARM         01/Feb/2025  19:56:45
+# Copyright 1999-2024 IAR Systems AB.
+#
+#    Cpu mode          =  thumb
+#    Endian            =  little
+#    Source file       =
+#        D:\proj\velograph\roland\cpu\roland_axis\src\can_thr.c
+#    Command line      =
+#        -f
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\can_thr.o.rsp
+#        (D:\proj\velograph\roland\cpu\roland_axis\src\can_thr.c -D
+#        VECT_TAB_FLASH -D IAR_ARM_CM3 -D MSTEP_BRD -D STEP_X -lcN
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\
+#        --diag_suppress Pa082,pe191 -o
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering
+#        --no_scheduling --debug --endian=little --cpu=Cortex-M3 -e --fpu=None
+#        --dlib_config C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Config_Full.h -I
+#        D:\proj\velograph\roland\cpu\roland_axis\.\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\src\board\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\src\inc\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common\libraries\inc\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common\libraries\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\freertos\source\inc\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\freertos\source\port\ARM_CM3\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\
+#        -I D:\proj\velograph\roland\cpu\roland_axis\..\..\common\dbg\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\can\ -On
+#        --use_c++_inline -I C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\)
+#        --dependencies=n
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\can_thr.o.iar_deps
+#    Locale            =  C
+#    List file         =
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\can_thr.lst
+#    Object file       =
+#        D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\Obj\can_thr.o
+#    Runtime model:       
+#      __CPP_Runtime   =  1
+#      __SystemLibrary =  DLib
+#      __dlib_version  =  6
+#
+###############################################################################
+
+D:\proj\velograph\roland\cpu\roland_axis\src\can_thr.c
+      1          #include <string.h>
+      2          #include "FreeRTOS.h"
+      3          #include "queue.h"
+      4          #include "semphr.h"
+      5          ///#include "stm32f2xx_gpio.h"
+      6          ///#include "stm32f2xx_rcc.h"
+      7          
+      8          #include "can.h"
+      9          #include "can_cmds.h"
+     10          #include "board.h"
+     11          #include "printk.h"
+     12          
+     13          extern can_msg_t CAN_RxMsg;
+     14          extern void set_mot_per(uint16_t per);
+     15          
+     16          xQueueHandle queu_to_send;
+     17          
+     18          int stop_mot_cmd(void)
+     19          {
+     20          cur_state &= ~STATE_MASK;
+     21          cur_state|=STATE_IDLE;  
+     22          printk("\n\rSTATE_IDLE ");
+     23          
+     24          put_mot_nstep(0);
+     25          return 0;
+     26          }
+     27          
+     28          int go_cmd(go_cmd_t *p_go_cmd)
+     29          {
+     30          cur_state &= ~STATE_MASK;
+     31          cur_state|=STATE_MOVE;  
+     32          printk("\n\rGo [dir=%x:per=%x:steps=%x] ",p_go_cmd->dirs,p_go_cmd->step_per,p_go_cmd->steps);
+     33          
+     34          set_dir_mot(p_go_cmd->dirs);
+     35          ////set_step_per(p_go_cmd->step_per);
+     36          set_mot_per(p_go_cmd->step_per);
+     37          put_mot_nstep(p_go_cmd->steps);
+     38          ////msleep(1000);
+     39          ////cur_stat=STATE_READY;  
+     40          return 0;
+     41          }
+     42          int go_cmd_conc(go_cmd_t *p_go_cmd)
+     43          {
+     44          cur_state &= ~STATE_MASK;
+     45          cur_state|=STATE_MOVE;  
+     46          printk("\n\rGo [dir=%x:per=%x:steps=%x] ",p_go_cmd->dirs,p_go_cmd->step_per,p_go_cmd->steps);
+     47          
+     48          set_dir_mot(p_go_cmd->dirs);
+     49          ////set_step_per(p_go_cmd->step_per);
+     50          set_mot_per(p_go_cmd->step_per);
+     51          put_mot_nstep(p_go_cmd->steps);
+     52          return 0;
+     53          }
+     54          extern uint8_t cur_mot_rej;
+     55          ///========================================
+     56          int set_param(set_param_cmd_t *i_data)
+     57          {
+     58          switch(i_data->num_par)
+     59             {
+     60             case MOTOR_REJ:
+     61               cur_mot_rej=i_data->par_val;
+     62                set_mot_rej(cur_mot_rej);
+     63               break;
+     64             case SET_COORD:
+     65               cur_coord=(int32_t)i_data->par_val;
+     66               break;
+     67             }
+     68          return 0;
+     69          }
+     70          void    test_print(can_msg_t  *p_msg)
+     71           {
+     72          uint8_t ii;
+     73              printk("\n\r ExtId[%x]",p_msg->id);
+     74              printk("\n\r DLC[%x]\n\r ",p_msg->len);
+     75              for(ii=0;ii<p_msg->len;ii++)
+     76                {
+     77                printk("[%x] ",p_msg->data[ii]);
+     78                }
+     79          
+     80           }
+     81               
+     82          ///===========================================
+     83          void can_rsv_task( void *pvParameters )
+     84          {
+     85          ///  uint8_t ii=0;
+     86          printk("\n\r can_rsv_task"); 
+     87           for(;;)
+     88            {
+     89            if( CAN_RxRdy)
+     90              {
+     91              CAN_RxRdy=0;
+     92              obr_can_cmd(CAN_RxMsg.data);
+     93            
+     94              printk("\n\r can_rx"); 
+     95              test_print(&CAN_RxMsg);
+     96          #if 0
+     97              printk("\n\r ExtId[%x]",CAN_RxMsg.id);
+     98              printk("\n\r DLC[%x]\n\r ",CAN_RxMsg.len);
+     99              for(ii=0;ii<CAN_RxMsg.len;ii++)
+    100                {
+    101                printk("[%x] ",CAN_RxMsg.data[ii]);
+    102                }
+    103          #endif
+    104              }
+    105            else
+    106            {
+    107          ////   CAN_wrMsg (&send_msg);
+    108              msleep(20);
+    109            }
+    110            }
+    111          }
+    112          
+    113          void can_send_thread(void* pp)
+    114          {
+    115          can_msg_t  snd_msg;
+    116          
+    117          printk("\n\r can_send_thread");
+    118          
+    119          ////goto_app();
+    120          
+    121          queu_to_send=xQueueCreate(CAN_MAX_LEN_QUEU,sizeof(can_msg_t));
+    122          for(;;)
+    123            {
+    124            xQueueReceive(queu_to_send,&snd_msg,portMAX_DELAY);
+    125          ////  can_wait_ready(READY_X);             //// wait ready X,Y,Z
+    126            CAN_wrMsg (&snd_msg);
+    127              printk("\n\r can_tx"); 
+    128              test_print(&snd_msg);
+    129            
+    130           ////  tst_print();
+    131          ///  set_curr_dir(st.dir_outbits);
+    132          ////  obr_segment();
+    133          ///=================================================
+    134          ////  sys.state &= ~STATE_CYCLE;
+    135          
+    136            }
+    137          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      16   can_rsv_task
+        16   -> _printk
+        16   -> obr_can_cmd
+        16   -> test_print
+        16   -> vTaskDelay
+      32   can_send_thread
+        32   -> CAN_wrMsg
+        32   -> _printk
+        32   -> test_print
+        32   -> xQueueGenericCreate
+        32   -> xQueueReceive
+       8   go_cmd
+         8   -> _printk
+         8   -> put_mot_nstep
+         8   -> set_dir_mot
+         8   -> set_mot_per
+       8   go_cmd_conc
+         8   -> _printk
+         8   -> put_mot_nstep
+         8   -> set_dir_mot
+         8   -> set_mot_per
+       8   set_param
+         8   -> set_mot_rej
+       8   stop_mot_cmd
+         8   -> _printk
+         8   -> put_mot_nstep
+      16   test_print
+        16   -> _printk
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable6
+       4  ??DataTable6_1
+       4  ??DataTable6_10
+       4  ??DataTable6_11
+       4  ??DataTable6_12
+       4  ??DataTable6_13
+       4  ??DataTable6_14
+       4  ??DataTable6_2
+       4  ??DataTable6_3
+       4  ??DataTable6_4
+       4  ??DataTable6_5
+       4  ??DataTable6_6
+       4  ??DataTable6_7
+       4  ??DataTable6_8
+       4  ??DataTable6_9
+      16  ?_0
+      32  ?_1
+      16  ?_2
+      16  ?_3
+       8  ?_4
+      16  ?_5
+      12  ?_6
+      20  ?_7
+      12  ?_8
+      52  can_rsv_task
+      58  can_send_thread
+      56  go_cmd
+      56  go_cmd_conc
+       4  queu_to_send
+      40  set_param
+      32  stop_mot_cmd
+      52  test_print
+
+ 
+   4 bytes in section .bss
+ 148 bytes in section .rodata
+ 406 bytes in section .text
+ 
+ 406 bytes of CODE  memory
+ 148 bytes of CONST memory
+   4 bytes of DATA  memory
+
+Errors: none
+Warnings: none

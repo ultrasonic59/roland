@@ -1,0 +1,535 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.60.2.399/W64 for ARM         25/Jan/2025  16:52:23
+# Copyright 1999-2024 IAR Systems AB.
+#
+#    Cpu mode                 =  thumb
+#    Endian                   =  little
+#    Source file              =  D:\proj\velograph\snail_w\common\dbg\printk1.c
+#    Command line             =
+#        -f
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\dbg_456133768103443040.dir\printk1.o.rsp
+#        (D:\proj\velograph\snail_w\common\dbg\printk1.c -D VECT_TAB_FLASH -D
+#        IAR_ARM_CM3 -D STEP_BRD -D STEP_X -lcN
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\List\dbg_456133768103443040.dir
+#        --diag_suppress Pa082,pe191 -o
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\dbg_456133768103443040.dir
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_clustering --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Config_Full.h -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\.\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\board\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\freertos\source\inc\
+#        -I D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\inc\ -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\freertos\source\port\ARM_CM3\
+#        -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\
+#        -I
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\
+#        -I D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\dbg\
+#        -On --use_c++_inline -I C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\)
+#        --dependencies=n
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\dbg_456133768103443040.dir\printk1.o.iar_deps
+#    Locale                   =  C
+#    List file                =
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\List\dbg_456133768103443040.dir\printk1.lst
+#    Object file              =
+#        D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\Obj\dbg_456133768103443040.dir\printk1.o
+#    Runtime model:              
+#      __CPP_Runtime          =  1
+#      __SystemLibrary        =  DLib
+#      __dlib_file_descriptor =  1
+#      __dlib_version         =  6
+#
+###############################################################################
+
+D:\proj\velograph\snail_w\common\dbg\printk1.c
+      1          
+      2          #include <stdio.h>
+      3          #include <stdarg.h>
+      4          
+      5          extern void _putk(char ch);
+      6          
+      7          enum { UI, UH, UL, SI, SH, SL };
+      8          enum { LEFT_SPACE, PREFIX, ZERO_PAD, VALUE_TXT, RIGHT_SPACE, OUT_DONE};
+      9          
+     10          static const struct
+     11          {
+     12            char c[2];
+     13            char size;
+     14          } prefix[]=
+     15          {
+     16            {{0,0},0},      /* 0: default, no prefix */
+     17            {{'-',0},1},    /* 1: minus sign */
+     18            {{'+',0},1},    /* 2: plus sign */
+     19            {{' ',0},1},    /* 3: space */
+     20            {{'0','x'},2},  /* 4: hex 0x */
+     21            {{'0','X'},2},  /* 5: hex 0X */
+     22          };
+     23          
+     24          /* Function Prototypes */
+     25          int _print_out(char *s, const char *format, va_list sp);
+     26          
+     27          int sprintf(char *s, const char *format, ...)
+     28          {
+     29            int return_count;
+     30            va_list sp;
+     31          
+     32            va_start(sp, format);
+     33          
+     34            return_count = _print_out(s, format, sp);
+     35            va_end(sp);
+     36            return (return_count);
+     37          }
+     38          
+     39          int _printk(const char *format, ...)
+     40          {
+     41            int return_count;
+     42            va_list sp;
+     43          
+     44            va_start(sp, format);
+     45            return_count = _print_out(NULL, format, sp);
+     46            va_end(sp);
+     47            return (return_count);
+     48          }
+     49          
+     50          int _print_out(char *s, const char *format, va_list sp)
+     51          {
+     52            int total = 0;
+     53          
+     54            char tmp_buf[12];                         /* maximum tmp_buf usage is 12 in %d */
+     55          
+     56            /* Loop through format string */
+     57            while ( *format )                         /* loop till hit NULL */
+     58            {
+     59              unsigned char tmp_char, index, out_state;
+     60              unsigned char left_justify = 0;         /* set default to right justify */
+     61              unsigned char prefix_select = 0;        /* set default prefix to none */
+     62              int  min_width = 0;            /* set default field min_width to 0 */
+     63              int  precision = 0;            /* set default precision to 0 */
+     64              unsigned char size_type = UI;           /* set default type to unsigned int */
+     65              char const *str_ptr = tmp_buf;    /* set default string source to buffer */
+     66          
+     67              union
+     68              {
+     69                unsigned long UL;
+     70                signed long SL;
+     71              } value;
+     72          
+     73              int str_len = 0;
+     74              tmp_buf[0] = 0;
+     75          
+     76              if ( *format == '%' )                   /* start of escape characters */
+     77              {
+     78                out_state = PREFIX;
+     79                do
+     80                {
+     81                  format++;                           /* point to next character */
+     82          
+     83                  /* Decode the flags */
+     84                  switch (*format)
+     85                  {
+     86                    case '0':
+     87                      precision = -1;                 /* if precision not explicitly set, this will zero fill min_width */
+     88                      break;
+     89                    case '#':
+     90                      prefix_select = 4;              /* exact prefix will be determined during type decode */
+     91                      break;
+     92                    case '+':
+     93                      prefix_select = 2;              /* this will be overriden if number is negative */
+     94                      break;
+     95                    case ' ':
+     96                      prefix_select = 3;              /* this will be overriden if number is negative */
+     97                      break;
+     98                    case '-':
+     99                      left_justify = 1;               /* left justification */
+    100                      break;
+    101                    default:
+    102                      out_state = OUT_DONE;           /* no flags left */
+    103                      break;
+    104                    }
+    105                  } while( out_state != OUT_DONE );
+    106          
+    107                /* check for minimum width */
+    108                index = 0;
+    109                while ( (*format >= '0') && (*format <= '9') )
+    110                {
+    111                  min_width = (min_width * index * 10) + (*format - '0');
+    112                  index++;
+    113                  format++;
+    114                }
+    115          
+    116                /* check for precision */
+    117                if (*format == '.')
+    118                {
+    119                  format++;
+    120                  index = 0;
+    121                  while ( (*format >= '0') && (*format <= '9') )
+    122                  {
+    123                    precision = (precision * index * 10) + (*format - '0');
+    124                    index++;
+    125                    format++;
+    126                  }
+    127                }
+    128          
+    129                /* check for size specifier */
+    130                switch(*format)
+    131                {
+    132                  case 'h':
+    133                    size_type = UH;
+    134                    format++;
+    135                    break;
+    136                  case 'l':
+    137                    size_type = UL;
+    138                    format++;
+    139                    break;
+    140                  default:
+    141                    break;
+    142                }
+    143          
+    144          
+    145                /* check which type of varaible to print */
+    146                switch(*format)
+    147                {
+    148                  case '%':
+    149                  {
+    150                    /* output a '%' */
+    151                    tmp_buf[0] = '%';
+    152                    tmp_buf[1] = 0;
+    153                    str_len = 1;
+    154                    break;
+    155                  }
+    156                  
+    157                  case 'c':
+    158                  {
+    159                    /* output a single character */
+    160                    tmp_buf[0] = (char)va_arg(sp, int);
+    161                    tmp_buf[1] = 0;
+    162                    str_len = 1;
+    163                    break;
+    164                  }
+    165          
+    166                  case 'd':
+    167                  case 'i':
+    168                    size_type += SI;
+    169                    /* flow through to decimal processing */
+    170          
+    171                  case 'u':
+    172                  {
+    173                    /* output decimal value from stack */
+    174                    static const unsigned long base10[] = {1000000000,100000000,10000000,1000000,100000,10000,1000,100,10,1};
+    175          
+    176                    /* convert all data types to long to ease later processing */
+    177                    switch (size_type)
+    178                    {
+    179                      default:
+    180                      case UI:
+    181                        value.UL = (unsigned long)va_arg(sp, unsigned int);
+    182                        break;
+    183          
+    184                      case SI:
+    185                        value.SL = (signed long)va_arg(sp, signed int);
+    186                        break;
+    187          
+    188                      case UH:
+    189                        value.UL = (unsigned long)(unsigned short)va_arg(sp, unsigned int);
+    190                        break;
+    191          
+    192                      case SH:
+    193                        value.SL = (signed long)(signed short)va_arg(sp, signed int);
+    194                        break;
+    195          
+    196                      case UL:
+    197                      case SL:
+    198                        value.UL = va_arg(sp, unsigned long);
+    199                        break;
+    200                    }
+    201          
+    202                    /* convert signed values to positive as necessary and set prefix appropriately */
+    203                    if (size_type >= SI)
+    204                    {
+    205                      if (value.SL < 0)
+    206                      {
+    207                        value.SL = -value.SL;
+    208                        prefix_select = 1;
+    209                      }
+    210                    }
+    211          
+    212                    /* write out decimal values to buffer...after suppressing zeros */
+    213                    for (index = 0; index < 10; index++)
+    214                    {
+    215                      tmp_char = (unsigned char)(value.UL/base10[index]);
+    216                      value.UL -= tmp_char * base10[index];
+    217                      tmp_buf[str_len] = tmp_char + '0';
+    218                      if ((tmp_char != 0) || (str_len !=0))
+    219                        str_len++;
+    220                    }
+    221          
+    222                    if (str_len == 0)
+    223                      str_len = 1; /* if value was zero, we need to increment length */
+    224                    
+    225                    tmp_buf[str_len] = 0;
+    226                    break;
+    227                  }
+    228          
+    229                  case 'X':
+    230                    if (prefix_select != 0) prefix_select++;
+    231                    /* fall through to processing */
+    232                  case 'x':  
+    233                  {
+    234                    /* output hex value from stack */
+    235                    static const char ascii_table_lower[] = "0123456789abcdef";
+    236                    static const char ascii_table_upper[] = "0123456789ABCDEF";
+    237                    static const char hex_shift[] = { 28, 24, 20, 16, 12, 8, 4, 0};
+    238          
+    239                    /* convert all data types to long to ease later processing */
+    240                    switch (size_type)
+    241                    {
+    242                      default:
+    243                      case UI:
+    244                      case SI:
+    245                        value.UL = (unsigned long)va_arg(sp, unsigned int);
+    246                        break;
+    247          
+    248                      case UH:
+    249                      case SH:
+    250                        value.UL = (unsigned long)(unsigned short)va_arg(sp, unsigned int);
+    251                        break;
+    252          
+    253                      case UL:
+    254                      case SL:
+    255                        value.UL = va_arg(sp, unsigned long);
+    256                        break;
+    257                    }
+    258          
+    259          
+    260                    /* write out hex values to buffer...after suppressing initial zeros */
+    261                    for (index = 0; index < 8; index++)
+    262                    {
+    263                      tmp_char = (unsigned char)(value.UL >> hex_shift[index]) & 0x0F;
+    264                      tmp_buf[str_len] = (*format == 'x') ? ascii_table_lower[tmp_char] : ascii_table_upper[tmp_char];
+    265                      if ((tmp_char != 0) || (str_len !=0))
+    266                        str_len++;
+    267                    }
+    268          
+    269                    if (str_len == 0)
+    270                      str_len = 1; /* if value was zero, we need to increment length */
+    271                    
+    272                    tmp_buf[str_len] = 0;
+    273                    break;
+    274                  }
+    275          
+    276                  case 's':
+    277                  case 'S':
+    278                  {
+    279                    /* Add string from stack */
+    280                    char const * t_str_ptr;
+    281          
+    282                    str_ptr = t_str_ptr = va_arg(sp, char *);
+    283                    while(*t_str_ptr)    /* find string length */
+    284                    {
+    285                      str_len++;
+    286                      t_str_ptr++;
+    287                    }
+    288                    break;
+    289                  }
+    290          
+    291                  default:
+    292                  {
+    293                    /* non-processed format...inform user and try not to crash */
+    294                    static const char err_msg[]="!!NG!!";
+    295                    static const char err_fmt[]=" ";
+    296          
+    297                    str_ptr = err_msg;
+    298                    str_len = (int)sizeof(err_msg)-1;
+    299                    format=err_fmt;
+    300                    
+    301                    break;
+    302                  }
+    303                } /* switch end */
+    304              } /* escape processing end */
+    305              else
+    306              {
+    307                /* pass through Standard ASCII */
+    308                index = 0;
+    309          ////      if( *format == '\n')    /* Add CR to LF */
+    310          ////        tmp_buf[str_len++] = '\r';
+    311          
+    312                tmp_buf[str_len++] = *format;
+    313                tmp_buf[str_len] = 0;
+    314              }
+    315          
+    316              out_state=LEFT_SPACE;
+    317          
+    318              /* if precision is -1, field has been requested to zero pad */
+    319              if (precision == -1)
+    320                precision = min_width - prefix[prefix_select].size;
+    321          
+    322              if ((precision > 0) && (*format == 's'))
+    323              {
+    324                /* requesting string truncation... */
+    325                if (str_len > precision)
+    326                  str_len = precision;
+    327          
+    328                /* zero precision to prevent zero padding */
+    329                precision = 0;
+    330              }
+    331          
+    332              /* precision now equals number of zero pads */
+    333              precision = precision - str_len;
+    334          
+    335              /* min_width now equals number of spaces to add...left_justify will control at beginning or end of min_width */
+    336              min_width = (min_width - str_len) - prefix[prefix_select].size;
+    337              min_width -= (precision > 0) ? precision : 0;
+    338          
+    339              do
+    340              {
+    341                tmp_char = 0;
+    342          
+    343                switch (out_state)
+    344                {
+    345                  case LEFT_SPACE:
+    346                  {
+    347                    if ((min_width > 0) && (left_justify == 0))
+    348                    {
+    349                      tmp_char = ' ';
+    350                      min_width--;
+    351                    }
+    352                    else
+    353                    {
+    354                      /* advance state */
+    355                      index = 0;
+    356                      out_state = PREFIX;
+    357                    }
+    358                    break;
+    359                  }
+    360                  case PREFIX:
+    361                  {
+    362                    tmp_char = prefix[prefix_select].c[index++];
+    363                    if (index >= prefix[prefix_select].size)
+    364                    {
+    365                      /* advance state */
+    366                      out_state = ZERO_PAD;
+    367                    }
+    368                    break;
+    369                  }
+    370                  case ZERO_PAD:
+    371                  {
+    372                    if (precision > 0)
+    373                    {
+    374                      tmp_char = '0';
+    375                      precision--;
+    376                    }
+    377                    else
+    378                    {
+    379                      /* advance state */
+    380                      precision = 0;
+    381                      out_state = VALUE_TXT;
+    382                    }
+    383                    break;
+    384                  }
+    385                  case VALUE_TXT:
+    386                  {
+    387                    tmp_char = str_ptr[precision++];    /* use precision for indexing because is type "int" */
+    388                    if (precision >= str_len)
+    389                    {
+    390                      /* advance state */
+    391                      out_state = RIGHT_SPACE;
+    392                    }
+    393                    break;
+    394                  }
+    395                  case RIGHT_SPACE:
+    396                  {
+    397                    if (min_width > 0)
+    398                    {
+    399                      tmp_char = ' ';
+    400                      min_width--;
+    401                    }
+    402                    else
+    403                    {
+    404                      /* advance state */
+    405                      out_state = OUT_DONE;
+    406                    }
+    407                    break;
+    408                  }
+    409                  default:
+    410                  {
+    411                    /* output complete */
+    412                    out_state = OUT_DONE;
+    413                    break;
+    414                  }
+    415                }
+    416          
+    417                if (tmp_char != 0)
+    418                {
+    419                  if(s != NULL)
+    420                    *s++ = tmp_char;
+    421                  else
+    422          ///          (void)putchar(tmp_char);
+    423                    (void)_putk(tmp_char);
+    424                  total++;
+    425                }
+    426          
+    427              }
+    428              while (out_state!=OUT_DONE);
+    429          
+    430              format++;
+    431            }   /* while format */
+    432          
+    433            /* Insert NULL at the end of the string */
+    434            if(s != NULL)
+    435              *s = 0;
+    436          
+    437            return total;
+    438          }
+    439          
+    440          void _printk_dummy(const char *format, ...)
+    441          {
+    442          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      64   _print_out
+        64   -> _putk
+      24   _printk
+        24   -> _print_out
+      12   _printk_dummy
+      24   sprintf
+        24   -> _print_out
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+       4  ??DataTable1_1
+       4  ??DataTable1_2
+       4  ??DataTable1_3
+       4  ??DataTable1_4
+       4  ??DataTable1_5
+       4  ??DataTable1_6
+   1'122  _print_out
+      24  _printk
+       6  _printk_dummy
+      20  ascii_table_lower
+      20  ascii_table_upper
+      40  base10
+       2  err_fmt
+       8  err_msg
+       8  hex_shift
+      20  prefix
+      26  sprintf
+
+ 
+   118 bytes in section .rodata
+ 1'206 bytes in section .text
+ 
+ 1'206 bytes of CODE  memory
+   118 bytes of CONST memory
+
+Errors: none
+Warnings: none

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BuildDb>
+    <Tool>
+        <Name>compiler</Name>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\roland_axis\src\app_can_cmds.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\drv_9119342922082540178.dir\app_can_cmds.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_flash - Copy.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\ST Library_14760386059681792492.dir\stm32f2xx_flash - Copy.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\startup\stm32f2xx_it.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\startup_5253055491327143397.dir\stm32f2xx_it.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_usart.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\ST Library_14760386059681792492.dir\stm32f2xx_usart.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\common\freertos\source\list.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\FreeRTOS_1129108015262781380.dir\list.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_gpio - Copy.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\ST Library_14760386059681792492.dir\stm32f2xx_gpio - Copy.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_rcc - Copy.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\ST Library_14760386059681792492.dir\stm32f2xx_rcc - Copy.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_spi.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\ST Library_14760386059681792492.dir\stm32f2xx_spi.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\misc.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\ST Library_14760386059681792492.dir\misc.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\system_stm32f2xx.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\ST Library_14760386059681792492.dir\system_stm32f2xx.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\common\dbg\printk1.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\dbg_456133768103443040.dir\printk1.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\roland_axis\src\board\mstep_board.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\Board_7221520210927654578.dir\mstep_board.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\common\freertos\source\port\MemMang\heap_2.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\FreeRTOS_1129108015262781380.dir\heap_2.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\roland_axis\src\board\zzzz.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\Board_7221520210927654578.dir\zzzz.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_tim.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\ST Library_14760386059681792492.dir\stm32f2xx_tim.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\common\freertos\source\port\ARM_CM3\port.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\FreeRTOS_1129108015262781380.dir\port.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\can\can_drv.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\drv_9119342922082540178.dir\can_drv.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\common\freertos\source\tasks.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\FreeRTOS_1129108015262781380.dir\tasks.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\common\freertos\source\queue.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\FreeRTOS_1129108015262781380.dir\queue.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\roland_axis\src\my_misc.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\Board_7221520210927654578.dir\my_misc.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\roland_axis\src\motor_tsk.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\Board_7221520210927654578.dir\motor_tsk.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\roland_axis\src\retarget.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\Board_7221520210927654578.dir\retarget.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\roland_axis\src\main.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\Board_7221520210927654578.dir\main.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\roland_axis\src\can_thr.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\can_thr.lst</Path>
+            </Output>
+        </Parent>
+        <Parent>
+            <Path>D:\proj\velograph\roland\cpu\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\src\stm32f2xx_can.c</Path>
+            <Output>
+                <Path>D:\proj\velograph\roland\cpu\roland_axis\roland_x_dbg\List\ST Library_14760386059681792492.dir\stm32f2xx_can.lst</Path>
+            </Output>
+        </Parent>
+    </Tool>
+</BuildDb>

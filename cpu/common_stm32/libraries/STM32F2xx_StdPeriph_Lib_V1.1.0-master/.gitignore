@@ -1,0 +1,17 @@
+*.pyc
+*.map
+*.dblite
+*.elf
+*.bin
+*.hex
+*.axf
+*.exe
+*.pdb
+*.idb
+*.ilk
+build
+.svn
+.o
+.d
+.bak
+bsp/stm32f20x/obj/

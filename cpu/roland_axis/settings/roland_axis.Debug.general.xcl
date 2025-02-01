@@ -1,0 +1,13 @@
+C:\iar\ewarm-9.60.2\arm\bin\armPROC.dll
+
+ C:\iar\ewarm-9.60.2\arm\bin\armSIM2.dll
+
+ D:\proj\velograph\roland\cpu\roland_axis\Debug\Exe\RTOSDemo.out
+
+ --plugin=C:\iar\ewarm-9.60.2\arm\bin\armLibSupportUniversal.dll
+
+ --device_macro=C:\iar\ewarm-9.60.2\arm/config/debugger/ST/STM32F2xx.dmac
+
+ 
+
+

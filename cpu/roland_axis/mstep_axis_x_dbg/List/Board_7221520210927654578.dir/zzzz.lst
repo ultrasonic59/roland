@@ -1,0 +1,101 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.60.2.399/W64 for ARM         01/Feb/2025  18:17:04
+# Copyright 1999-2024 IAR Systems AB.
+#
+#    Cpu mode          =  thumb
+#    Endian            =  little
+#    Source file       =
+#        D:\proj\velograph\roland\cpu\roland_axis\src\board\zzzz.c
+#    Command line      =
+#        -f
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\Obj\Board_7221520210927654578.dir\zzzz.o.rsp
+#        (D:\proj\velograph\roland\cpu\roland_axis\src\board\zzzz.c -D
+#        VECT_TAB_FLASH -D IAR_ARM_CM3 -D MSTEP_BRD -D STEP_X -lcN
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\List\Board_7221520210927654578.dir
+#        --diag_suppress Pa082,pe191 -o
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\Obj\Board_7221520210927654578.dir
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_clustering --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Config_Full.h -I
+#        D:\proj\velograph\roland\cpu\roland_axis\.\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\src\board\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\src\inc\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common\libraries\inc\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common\libraries\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\freertos\source\inc\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\freertos\source\port\ARM_CM3\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\
+#        -I D:\proj\velograph\roland\cpu\roland_axis\..\..\common\dbg\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\can\ -On
+#        --use_c++_inline -I C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\)
+#        --dependencies=n
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\Obj\Board_7221520210927654578.dir\zzzz.o.iar_deps
+#    Locale            =  C
+#    List file         =
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\List\Board_7221520210927654578.dir\zzzz.lst
+#    Object file       =
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\Obj\Board_7221520210927654578.dir\zzzz.o
+#    Runtime model:       
+#      __CPP_Runtime   =  1
+#      __SystemLibrary =  DLib
+#      __dlib_version  =  6
+#
+###############################################################################
+
+D:\proj\velograph\roland\cpu\roland_axis\src\board\zzzz.c
+      1          #include "FreeRTOS.h"
+      2          #include "queue.h"
+      3          #include "semphr.h"
+      4          
+      5          ////#include "stm32f2xx_gpio.h"
+      6          #include "board.h"
+      7          
+      8          ////#define TEST_PIN ZSTP_PIN
+      9          ////#define TEST_PIN_GPIO ZSTP_PIN_GPIO
+     10          
+     11          void  put_tst_pin(uint8_t idat)
+     12          {
+     13          #if 1  
+     14          if(idat&0x1)
+     15            {
+     16            GPIO_SetBits(TST3_PIN_GPIO, TST3_PIN);
+     17             GPIO_SetBits(TST2_PIN_GPIO, TST2_PIN);
+     18            ////GPIO_SetBits(TST7_PIN_GPIO, TST7_PIN);
+     19            }
+     20          else
+     21            {
+     22             GPIO_ResetBits(TST3_PIN_GPIO, TST3_PIN);
+     23             GPIO_ResetBits(TST2_PIN_GPIO, TST2_PIN);
+     24             ////GPIO_ResetBits(TST7_PIN_GPIO, TST7_PIN);
+     25            }
+     26          #endif 
+     27          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      16   put_tst_pin
+        16   -> GPIO_ResetBits
+        16   -> GPIO_SetBits
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      56  put_tst_pin
+
+ 
+ 56 bytes in section .text
+ 
+ 56 bytes of CODE memory
+
+Errors: none
+Warnings: none

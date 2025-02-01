@@ -1,0 +1,502 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V9.60.2.399/W64 for ARM         01/Feb/2025  18:17:04
+# Copyright 1999-2024 IAR Systems AB.
+#
+#    Cpu mode          =  thumb
+#    Endian            =  little
+#    Source file       =
+#        D:\proj\velograph\roland\cpu\roland_axis\src\motor_tsk.c
+#    Command line      =
+#        -f
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\Obj\Board_7221520210927654578.dir\motor_tsk.o.rsp
+#        (D:\proj\velograph\roland\cpu\roland_axis\src\motor_tsk.c -D
+#        VECT_TAB_FLASH -D IAR_ARM_CM3 -D MSTEP_BRD -D STEP_X -lcN
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\List\Board_7221520210927654578.dir
+#        --diag_suppress Pa082,pe191 -o
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\Obj\Board_7221520210927654578.dir
+#        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+#        --no_clustering --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Config_Full.h -I
+#        D:\proj\velograph\roland\cpu\roland_axis\.\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\src\board\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\src\inc\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common\libraries\inc\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common\libraries\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\freertos\source\inc\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\freertos\source\port\ARM_CM3\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\
+#        -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\
+#        -I D:\proj\velograph\roland\cpu\roland_axis\..\..\common\dbg\ -I
+#        D:\proj\velograph\roland\cpu\roland_axis\..\..\common\can\ -On
+#        --use_c++_inline -I C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\)
+#        --dependencies=n
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\Obj\Board_7221520210927654578.dir\motor_tsk.o.iar_deps
+#    Locale            =  C
+#    List file         =
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\List\Board_7221520210927654578.dir\motor_tsk.lst
+#    Object file       =
+#        D:\proj\velograph\roland\cpu\roland_axis\mstep_axis_x_dbg\Obj\Board_7221520210927654578.dir\motor_tsk.o
+#    Runtime model:       
+#      __CPP_Runtime   =  1
+#      __SystemLibrary =  DLib
+#      __dlib_version  =  6
+#
+###############################################################################
+
+D:\proj\velograph\roland\cpu\roland_axis\src\motor_tsk.c
+      1          #include <string.h>
+      2          #include "FreeRTOS.h"
+      3          #include "queue.h"
+      4          #include "semphr.h"
+      5          
+      6          ////#include "board.h"
+      7          #include "board.h"
+      8          #include "printk.h"
+      9          
+     10          #include "snail_can_cmds.h"
+     11          #include "can.h"
+     12          #include "can_cmds.h"
+     13          ///#include "emul_eeprom.h"
+     14          extern int check_push_key_dbg(void);
+     15          extern uint8_t ena_check_conc;
+     16          
+     17          uint8_t cur_mot_rej=DEF_MOT_REJ;
+     18          
+     19          static uint8_t cur_mot_dir=0;
+     20          
+     21          cmd_t cur_cmd={0};
+     22          
+     23          void motor_task( void *pvParameters )
+     24          {
+     25          uint8_t btst=0; 
+     26          uint8_t psk=0; 
+     27          ///uint16_t tst;
+     28          char key=0;
+     29          int nstep=300;
+     30          uint8_t dir=0;
+     31          uint8_t mot_rej=0;
+     32          printk("\n\r motor_task"); 
+     33          motor_init();
+     34          
+     35          #if 0
+     36          set_sleep_mot(1);
+     37          ////set_ena_mot(1);
+     38          set_reset_mot(1);
+     39          uDelay(1000);
+     40          set_reset_mot(0);
+     41          uDelay(20000);
+     42          init_step_mot();
+     43          ////set_ena_mot(0);
+     44          ///tst=mot_spi_rd(0x0);
+     45          ///tst|=0x1;
+     46          ///mot_spi_wr(0x0,tst);
+     47           ena_mot(0) ;
+     48          #endif
+     49           
+     50          for(;;)
+     51          {
+     52          if(check_push_key_dbg())
+     53            {
+     54            key=get_byte_dbg() ;  
+     55            switch(key)
+     56              {
+     57              case 'a':
+     58                nstep += 100;
+     59                break;
+     60              case 's':
+     61                if(nstep)
+     62                  nstep-= 100;
+     63                  break;
+     64              case 'd':
+     65                dir ++;
+     66                dir&=0x1;
+     67                break;
+     68              case 'm':
+     69                mot_rej ++;
+     70                if(mot_rej>8)
+     71                  mot_rej=0;
+     72           ////     mot_rej&=0x7;
+     73                break;
+     74              case 'p':
+     75                ena_check_conc=0;
+     76               psk=1;
+     77                break;
+     78              case 'P':
+     79                    ena_check_conc=1;
+     80           
+     81               psk=1;
+     82                break;
+     83             case 'z':
+     84          ///     print_mot_reg();
+     85                break;
+     86              
+     87             }
+     88            btst = get_conc();
+     89          
+     90            printk("\n\r nstep[%d] dir[%x] Mot_rej[%x] chk_conc[%x] conc=[%x]",nstep,dir,mot_rej,ena_check_conc,btst); 
+     91            set_dir_mot(dir);
+     92            set_mot_rej(mot_rej);
+     93            if(psk)
+     94              {
+     95              put_mot_nstep(nstep);
+     96              psk=0;
+     97              }
+     98            }  
+     99          }
+    100          }
+    101          
+    102          ///=============================================
+    103          ////void put_mot_nstep(uint32_t nstep)
+    104          
+    105          void set_mot_per(uint16_t per)
+    106          {
+    107          #if 1
+    108          if(per>MAX_PER)
+    109            per=MAX_PER;
+    110          else if(per<MIN_PER)
+    111            per=MIN_PER;
+    112          MOT_STEP_TIM ->ARR = per*2;////
+    113          MOT_STEP_TIM ->CCR1 = per;////
+    114          printk("\n\r set_mot_per[%x]",per);
+    115          #endif
+    116          }
+    117          
+    118          ////=======================================================
+    119          volatile uint32_t num_step=0;
+    120          
+    121          void  set_step_mot(uint8_t idat)
+    122          {
+    123          if(idat&0x1)
+    124            {
+    125            GPIO_SetBits(MOT_STEP_PIN_GPIO, MOT_STEP_PIN);
+    126            }
+    127          else
+    128            {
+    129             GPIO_ResetBits(MOT_STEP_PIN_GPIO, MOT_STEP_PIN);
+    130            }
+    131          }
+    132          
+    133          ///==================================================
+    134          #if 0
+    135          void mot_step_tim_init(void)
+    136          {
+    137          #if 1
+    138          NVIC_InitTypeDef NVIC_InitStructure; 
+    139          
+    140          RCC->APB2ENR |= MOT_STEP_TIM_RCC;
+    141          MOT_STEP_TIM ->PSC = DEF_MOT_TIM_PRESC;
+    142          MOT_STEP_TIM ->ARR = DEF_MOT_TIM_PERIOD;////
+    143          MOT_STEP_TIM ->CCR1 = DEF_MOT_TIM_PERIOD/2;////30;
+    144          MOT_STEP_TIM->CCER |= TIM_CCER_CC1E;////TIM_CCER_CC2NE;////| TIM_CCER_CC3NP;
+    145          MOT_STEP_TIM->BDTR |= TIM_BDTR_MOE;
+    146          MOT_STEP_TIM->CCMR1 = TIM_CCMR1_OC1M_0 | TIM_CCMR1_OC1M_1; 
+    147          MOT_STEP_TIM->CR1 &= ~TIM_CR1_DIR;
+    148          MOT_STEP_TIM->CR1 &= ~TIM_CR1_CMS;
+    149          
+    150          MOT_STEP_TIM ->DIER = TIM_DIER_CC1IE;
+    151          TIM_ClearITPendingBit(MOT_STEP_TIM, TIM_IT_CC1);
+    152          
+    153          NVIC_InitStructure.NVIC_IRQChannel = MOT_TIM_IRQN;
+    154          //// highest priority
+    155          NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;
+    156          
+    157          NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    158          //// highest priority
+    159          NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    160          NVIC_Init(&NVIC_InitStructure);
+    161          #endif
+    162          }
+    163          #endif
+    164          ///===========================================================
+    165          ///static uint8_t cur_step_out=0;
+    166          void MOT_STEP_TIM_IRQHandler(void)
+    167          { 
+    168          if(num_step)
+    169            {
+    170            num_step--;  
+    171            if((cur_mot_dir&0x1)==0)
+    172              cur_coord++;
+    173            else
+    174              cur_coord--;
+    175            if(num_step==0)
+    176              {
+    177              stop_mot_step_tim(); 
+    178           ///   set_ena_mot(1);
+    179              }
+    180            }
+    181          TIM_ClearITPendingBit(MOT_STEP_TIM, TIM_IT_CC2);
+    182          }
+    183          
+    184          #if 0
+    185          void __MOT_STEP_TIM_IRQHandler(void)
+    186          { 
+    187          
+    188          uint8_t tconc;
+    189          tconc=  get_conc_n();
+    190          #if 0
+    191          if(ena_check_conc)
+    192          {
+    193          ///tconc=  get_conc_n();
+    194          if(tconc & MASK_CON !=0x0)
+    195            num_step=0;
+    196          }
+    197          #endif
+    198          if(cur_step_out)
+    199            {
+    200             cur_step_out=0;
+    201             set_step_mot(cur_step_out);
+    202            }
+    203          else
+    204          {
+    205            if((cur_mot_dir&0x1)==0)
+    206              {
+    207                if((tconc & MASK_CON1) !=0x0)
+    208                     num_step=0;
+    209              }
+    210            else
+    211               {
+    212               if((tconc & MASK_CON0) !=0x0)
+    213                     num_step=0;
+    214               }
+    215          if(num_step)
+    216            {
+    217             cur_step_out=1;
+    218             set_step_mot(cur_step_out);
+    219            num_step--;
+    220            if((cur_mot_dir&0x1)==0)
+    221              cur_coord++;
+    222            else
+    223              cur_coord--;
+    224             
+    225            if(num_step==0)
+    226              {
+    227              stop_mot_step_tim(); 
+    228              cur_state &= ~STATE_MASK;
+    229              cur_state|=STATE_READY;  
+    230          
+    231              ena_mot(0) ;
+    232              }
+    233            }
+    234          else
+    235            {
+    236             stop_mot_step_tim(); 
+    237             ena_mot(0) ;
+    238             }
+    239          }
+    240          
+    241          ////TIM_ClearITPendingBit(MOT_STEP_TIM, TIM_IT_CC2);
+    242          TIM_ClearITPendingBit(MOT_STEP_TIM, TIM_IT_CC1);
+    243          }
+    244          #endif
+    245          void mot_tim_init(void)
+    246          {
+    247          NVIC_InitTypeDef NVIC_InitStructure; 
+    248          
+    249          RCC->APB2ENR |= MOT_STEP_TIM_RCC;
+    250          MOT_STEP_TIM ->PSC = DEF_MOT_TIM_PRESC;
+    251          ////LED_PWM_TIM->ARR = 1000;
+    252          MOT_STEP_TIM ->ARR = DEF_MOT_TIM_PERIOD;////
+    253          MOT_STEP_TIM ->CCR2 = DEF_MOT_TIM_PERIOD/2;////30;
+    254          MOT_STEP_TIM->CCER |= TIM_CCER_CC2NE;////| TIM_CCER_CC3NP;
+    255          MOT_STEP_TIM->BDTR |= TIM_BDTR_MOE;
+    256          MOT_STEP_TIM->CCMR1 = TIM_CCMR1_OC2M_0 | TIM_CCMR1_OC2M_1; 
+    257          MOT_STEP_TIM->CR1 &= ~TIM_CR1_DIR;
+    258          MOT_STEP_TIM->CR1 &= ~TIM_CR1_CMS;
+    259          MOT_STEP_TIM->CR1 |= TIM_CR1_CEN;
+    260          MOT_STEP_TIM ->DIER = TIM_DIER_CC2IE|TIM_DIER_COMIE;
+    261          TIM_ClearITPendingBit(MOT_STEP_TIM, TIM_IT_COM);
+    262          	// Enable interrupt, motor commutation has high piority and has
+    263          	// a higher subpriority then the hall sensor
+    264          
+    265          NVIC_InitStructure.NVIC_IRQChannel = MOT_TIM_IRQN;
+    266          	// highest priority
+    267          NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;
+    268          
+    269          NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    270          	// highest priority
+    271          NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    272          NVIC_Init(&NVIC_InitStructure);
+    273          TIM_ITConfig(MOT_STEP_TIM, TIM_IT_CC2, ENABLE);
+    274          
+    275          
+    276          }
+    277          void stop_mot_step_tim(void)
+    278          {
+    279          TIM_Cmd(MOT_STEP_TIM, DISABLE);
+    280          }
+    281          
+    282          void put_mot_nstep(uint32_t nstep)
+    283          {
+    284          num_step=nstep; 
+    285          set_ena_mot(0);
+    286          TIM_Cmd(MOT_STEP_TIM, ENABLE);
+    287          }
+    288          volatile uint32_t gsr;
+    289          ////=======================================================
+    290          
+    291          void set_mot_rej(uint8_t rej)
+    292          {
+    293          if(rej&0x1)
+    294            {
+    295            GPIO_SetBits(MOT_M0_PIN_GPIO, MOT_M0_PIN);
+    296            }
+    297          else
+    298            {
+    299             GPIO_ResetBits(MOT_M0_PIN_GPIO, MOT_M0_PIN);
+    300            }
+    301          if(rej&0x2)
+    302            {
+    303            GPIO_SetBits(MOT_M1_PIN_GPIO, MOT_M1_PIN);
+    304            }
+    305          else
+    306            {
+    307             GPIO_ResetBits(MOT_M1_PIN_GPIO, MOT_M1_PIN);
+    308            }
+    309          if(rej&0x4)
+    310            {
+    311            GPIO_SetBits(MOT_M2_PIN_GPIO, MOT_M2_PIN);
+    312            }
+    313          else
+    314            {
+    315             GPIO_ResetBits(MOT_M2_PIN_GPIO, MOT_M2_PIN);
+    316            }
+    317          }
+    318          
+    319          ///=============================================
+    320          void motor_init(void)
+    321          {
+    322          mot_tim_init(); 
+    323          
+    324          set_mot_rej(DEF_MOT_REJ);
+    325          stop_mot_step_tim();
+    326          set_sleep_mot(1);
+    327          set_reset_mot(0);
+    328          uDelay(1000);
+    329          set_reset_mot(1);
+    330          uDelay(20000);
+    331          ///set_ena_mot(1);
+    332          
+    333          #if 0
+    334          mot_step_tim_init();
+    335          mot_spi_init();
+    336          uint16_t tmp;
+    337          
+    338          set_sleep_mot(1);
+    339          ////set_ena_mot(1);
+    340          set_reset_mot(1);
+    341          uDelay(1000);
+    342          set_reset_mot(0);
+    343          uDelay(20000);
+    344          init_step_mot();
+    345          ena_mot(0) ;
+    346          if(EE_ReadVariable(ADDR_EEPROM_MOT_REJ, &tmp)==0)
+    347            {
+    348              if(tmp>MAX_MOT_REJ)
+    349                tmp=MAX_MOT_REJ;
+    350             set_mot_rej(tmp);
+    351            }
+    352          else
+    353             set_mot_rej(DEF_MOT_REJ);
+    354          #endif 
+    355          }
+    356          ///==============================================
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   TIM1_CC_IRQHandler
+         8   -> TIM_ClearITPendingBit
+         8   -> stop_mot_step_tim
+      16   mot_tim_init
+        16   -> NVIC_Init
+        16   -> TIM_ClearITPendingBit
+        16   -> TIM_ITConfig
+       8   motor_init
+         8   -> mot_tim_init
+         8   -> set_mot_rej
+         8   -> set_reset_mot
+         8   -> set_sleep_mot
+         8   -> stop_mot_step_tim
+         8   -> uDelay
+      40   motor_task
+        40   -> _printk
+        40   -> check_push_key_dbg
+        40   -> get_byte_dbg
+        40   -> get_conc
+        40   -> motor_init
+        40   -> put_mot_nstep
+        40   -> set_dir_mot
+        40   -> set_mot_rej
+       8   put_mot_nstep
+         8   -> TIM_Cmd
+         8   -> set_ena_mot
+       8   set_mot_per
+         8   -> _printk
+       8   set_mot_rej
+         8   -> GPIO_ResetBits
+         8   -> GPIO_SetBits
+       8   set_step_mot
+         8   -> GPIO_ResetBits
+         8   -> GPIO_SetBits
+       8   stop_mot_step_tim
+         8   -> TIM_Cmd
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable7
+       4  ??DataTable7_1
+       4  ??DataTable7_10
+       4  ??DataTable7_11
+       4  ??DataTable7_12
+       4  ??DataTable7_13
+       4  ??DataTable7_14
+       4  ??DataTable7_15
+       4  ??DataTable7_16
+       4  ??DataTable7_17
+       4  ??DataTable7_2
+       4  ??DataTable7_3
+       4  ??DataTable7_4
+       4  ??DataTable7_5
+       4  ??DataTable7_6
+       4  ??DataTable7_7
+       4  ??DataTable7_8
+       4  ??DataTable7_9
+      16  ?_0
+      56  ?_1
+      20  ?_2
+      62  TIM1_CC_IRQHandler
+       8  cur_cmd
+       1  cur_mot_dir
+       1  cur_mot_rej
+       4  gsr
+     148  mot_tim_init
+      52  motor_init
+     218  motor_task
+       4  num_step
+      24  put_mot_nstep
+      66  set_mot_per
+      76  set_mot_rej
+      32  set_step_mot
+      12  stop_mot_step_tim
+
+ 
+  17 bytes in section .bss
+   1 byte  in section .data
+  92 bytes in section .rodata
+ 762 bytes in section .text
+ 
+ 762 bytes of CODE  memory
+  92 bytes of CONST memory
+  18 bytes of DATA  memory
+
+Errors: none
+Warnings: none

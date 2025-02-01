@@ -1,0 +1,35 @@
+D:\proj\velograph\snail_w\stm32_snail\mstep_axis\step_x_dbg\BrowseInfo\drv_9119342922082540178.dir\can_drv.pbi: \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\drv\can_drv.c \
+  C:\iar\ewarm-9.60.2\arm\inc\c\stdint.h \
+  C:\iar\ewarm-9.60.2\arm\inc\c\ycheck.h \
+  C:\iar\ewarm-9.60.2\arm\inc\c\yvals.h \
+  C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Defaults.h \
+  C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Config_Full.h \
+  C:\iar\ewarm-9.60.2\arm\inc\c\DLib_Product.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\stm32f2xx.h \
+  C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\core_cm3.h \
+  C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\cmsis_version.h \
+  C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\cmsis_compiler.h \
+  C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\cmsis_iccarm.h \
+  C:\iar\ewarm-9.60.2\arm\inc\c\aarch32\iccarm_builtin.h \
+  C:\iar\ewarm-9.60.2\arm\CMSIS\Core\Include\mpu_armv7.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\system_stm32f2xx.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_rcc.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_can.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\misc.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\board\board.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\board\step_board.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\stm32f2xx_conf.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_dma.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_exti.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_flash.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_gpio.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_iwdg.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_pwr.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_rtc.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_spi.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_syscfg.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_tim.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\common_stm32\libraries\STM32F2xx_StdPeriph_Driver\inc\stm32f2xx_usart.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\src\inc\my_misc.h \
+  D:\proj\velograph\snail_w\stm32_snail\mstep_axis\..\..\common\dbg\printk.h
